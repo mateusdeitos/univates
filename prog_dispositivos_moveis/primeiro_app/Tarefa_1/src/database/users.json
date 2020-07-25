@@ -2,6 +2,19 @@
     {
         "name": "Mateus Deitos",
         "login": "mateus",
-        "pass": "123456"
+        "pass": "123456",
+        "tip": "A senha que todo mundo usa"
+    },
+    {
+        "name": "Juca Bala",
+        "login": "juca",
+        "pass": "bala",
+        "tip": "A senha do Juca"
+    },
+    {
+        "name": "Joãozinho",
+        "login": "little_john",
+        "pass": "john123",
+        "tip": "Dica do Joãozinho"
     }
 ]

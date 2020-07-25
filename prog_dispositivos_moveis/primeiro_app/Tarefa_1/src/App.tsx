@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect} from 'react';
-import {KeyboardAvoidingView, Alert} from 'react-native';
+import {Alert} from 'react-native';
 import usersFile from '../src/database/users.json';
 import Button from '../src/components/Button/index';
 import Input from '../src/components/Input/index';
@@ -10,6 +10,7 @@ interface UserData {
   name: string;
   login: string;
   pass: string;
+  tip: string;
 }
 
 const App = () => {
@@ -22,38 +23,46 @@ const App = () => {
     setUsers(usersData);
   }, []);
 
-  const handleLogin = () => {
+  const realizaLogin = () => {
     const user = users.find((u) => u.login === login);
     if (!user) {
-      Alert.alert('Usuário incorreto.');
+      Alert.alert('Erro', 'Usuário inexistente.');
       return;
     }
 
     const verificaSenha = user.pass === pass;
     if (!verificaSenha) {
-      Alert.alert('senha incorreta.');
+      Alert.alert('Erro', 'Senha incorreta! Gostaria de ver a dica de senha?', [
+        {
+          text: 'Sim',
+          onPress: () => Alert.alert('Dica:', user.tip),
+          style: 'default',
+        },
+        {
+          text: 'Não',
+          style: 'cancel',
+        },
+      ]);
       return;
     }
 
-    Alert.alert(`Olá ${user.name}, seja bem-vindo.`);
+    Alert.alert('Sucesso', `Olá ${user.name}, seja bem-vindo.`);
   };
 
   return (
     <>
-      <KeyboardAvoidingView style={{flex: 1}} behavior={undefined} enabled>
-        <Container>
-          <Input
-            placeholder="Usuário"
-            onChangeText={(event) => setLogin(event)}
-          />
-          <Input
-            secureTextEntry
-            placeholder="Senha"
-            onChangeText={(event) => setPass(event)}
-          />
-          <Button onPress={handleLogin}>Entrar</Button>
-        </Container>
-      </KeyboardAvoidingView>
+      <Container>
+        <Input
+          placeholder="Usuário"
+          onChangeText={(event) => setLogin(event)}
+        />
+        <Input
+          secureTextEntry
+          placeholder="Senha"
+          onChangeText={(event) => setPass(event)}
+        />
+        <Button onPress={realizaLogin}>Entrar</Button>
+      </Container>
     </>
   );
 };
