@@ -1,0 +1,12 @@
+[
+    {
+        "label": "Masculino",
+        "value": 0,
+        "activeColor": "#4ec5f1"
+    },
+    {
+        "label": "Feminino",
+        "value": 1,
+        "activeColor": "#ff38b6"
+    }
+]

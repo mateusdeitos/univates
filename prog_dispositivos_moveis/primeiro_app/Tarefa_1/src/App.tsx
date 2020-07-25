@@ -2,8 +2,8 @@
 import React, {useState, useEffect} from 'react';
 import {Alert} from 'react-native';
 import usersFile from '../src/database/users.json';
-import Button from '../src/components/Button/index';
-import Input from '../src/components/Input/index';
+import Button from '../../components/Button/index';
+import Input from '../../components/Input/index';
 import {Container} from './styles';
 
 interface UserData {
