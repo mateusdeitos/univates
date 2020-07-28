@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import {lighten} from 'polished';
+import Icon from 'react-native-vector-icons/Feather';
 
 export const Container = styled.View`
   width: 100%;
@@ -19,4 +20,8 @@ export const TextInput = styled.TextInput`
   /* color: #312e38; */
   font-size: 16px;
   font-family: 'Roboto-Regular';
+`;
+
+export const InputIcon = styled(Icon)`
+  margin-right: 8px;
 `;

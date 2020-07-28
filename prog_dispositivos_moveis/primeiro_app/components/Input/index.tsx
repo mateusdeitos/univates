@@ -1,10 +1,16 @@
 import React from 'react';
 import {TextInputProperties} from 'react-native';
-import {Container, TextInput} from './styles';
+import {Container, TextInput, InputIcon} from './styles';
+import {shade} from 'polished';
 
-const Input: React.FC<TextInputProperties> = ({...rest}) => {
+interface InputProps extends TextInputProperties {
+  icon?: string;
+}
+
+const Input: React.FC<InputProps> = ({icon, ...rest}) => {
   return (
     <Container>
+      <InputIcon name={icon} size={20} color={shade(0.2, '#4ec5f1')} />
       <TextInput {...rest} />
     </Container>
   );
