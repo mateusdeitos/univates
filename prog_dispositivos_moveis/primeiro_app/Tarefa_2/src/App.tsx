@@ -1,12 +1,13 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect} from 'react';
-import {Alert} from 'react-native';
+import {Alert, KeyboardAvoidingView, ScrollView} from 'react-native';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Button from '../../components/Button/index';
 import Input from '../../components/Input/index';
 import RadioButton from '../../components/RadioButton/index';
-// import SwitchSelector from 'react-native-switch-selector';
 import opcoes from './config/opcoesGenero.json';
 import {Container} from './styles';
+import moment from 'moment';
 
 interface switchOptions {
   label: string;
@@ -17,7 +18,9 @@ interface switchOptions {
 const App = () => {
   const [generos, setGeneros] = useState<switchOptions[]>([]);
   const [nome, setNome] = useState('');
-  const [generoSelecionado, setGeneroSelecionado] = useState(0);
+  const [dataNascimento, setDataNascimento] = useState(new Date(2000, 0, 1));
+  const [exibirDatePicker, setExibirDatePicker] = useState(false);
+  const [generoSelecionado, setGeneroSelecionado] = useState('Masculino');
   const [rua, setRua] = useState('');
   const [bairro, setBairro] = useState('');
   const [cidade, setCidade] = useState('');
@@ -28,34 +31,72 @@ const App = () => {
   }, [generos]);
 
   function realizaCadastro() {
-    const mensagem = `Nome: ${nome} \nGênero: ${generoSelecionado} \nRua: ${rua} \nBairro: ${bairro} \nCidade: ${cidade}`;
+    const mensagem = `Nome: ${nome} \nData de Nascimento: ${moment(
+      dataNascimento,
+    ).format(
+      'DD/MM/YYYY',
+    )} \nGênero: ${generoSelecionado} \nRua: ${rua} \nBairro: ${bairro} \nCidade: ${cidade}`;
     Alert.alert('Sucesso', mensagem);
+  }
+
+  function mostraDatePicker() {
+    setExibirDatePicker(true);
+  }
+
+  function mudaData(data: any) {
+    setExibirDatePicker(false);
+    const dataSelecionada = data || new Date();
+    setDataNascimento(dataSelecionada);
+  }
+
+  function mudaGenero(data: any) {
+    setGeneroSelecionado(data === 0 ? 'Masculino' : 'Feminino');
   }
 
   return (
     <>
-      <Container>
-        <Input
-          placeholder="Nome Completo"
-          onChangeText={(value) => setNome(value)}
-        />
-        <RadioButton
-          options={generos}
-          initial={0}
-          onPress={(value) => setGeneroSelecionado(value)}
-        />
-        <Input placeholder="Data de Nascimento" />
-        <Input placeholder="Rua" onChangeText={(value) => setRua(value)} />
-        <Input
-          placeholder="Bairro"
-          onChangeText={(value) => setBairro(value)}
-        />
-        <Input
-          placeholder="Cidade"
-          onChangeText={(value) => setCidade(value)}
-        />
-        <Button onPress={realizaCadastro}>Cadastrar</Button>
-      </Container>
+      <KeyboardAvoidingView
+        style={{flex: 1}}
+        behavior={undefined}
+        enabled={false}>
+        <ScrollView style={{marginTop: 48}}>
+          <Container>
+            <Input
+              placeholder="Nome Completo"
+              onChangeText={(value) => setNome(value)}
+            />
+            <RadioButton
+              options={generos}
+              initial={0}
+              onPress={(value) => mudaGenero(value)}
+            />
+            <Input
+              onFocus={mostraDatePicker}
+              placeholder="Data de Nascimento"
+              value={moment(dataNascimento).format('DD/MM/YYYY')}
+            />
+            <DateTimePickerModal
+              date={new Date(2000, 1, 1)}
+              display="spinner"
+              isVisible={exibirDatePicker}
+              onConfirm={mudaData}
+              onCancel={() => setExibirDatePicker(false)}
+            />
+
+            <Input placeholder="Rua" onChangeText={(value) => setRua(value)} />
+            <Input
+              placeholder="Bairro"
+              onChangeText={(value) => setBairro(value)}
+            />
+            <Input
+              placeholder="Cidade"
+              onChangeText={(value) => setCidade(value)}
+            />
+
+            <Button onPress={realizaCadastro}>Cadastrar</Button>
+          </Container>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </>
   );
 };
