@@ -62,6 +62,7 @@ const App = () => {
         <ScrollView style={{marginTop: 48}}>
           <Container>
             <Input
+              icon="user"
               placeholder="Nome Completo"
               onChangeText={(value) => setNome(value)}
             />
@@ -71,6 +72,7 @@ const App = () => {
               onPress={(value) => mudaGenero(value)}
             />
             <Input
+              icon="calendar"
               onFocus={mostraDatePicker}
               placeholder="Data de Nascimento"
               value={moment(dataNascimento).format('DD/MM/YYYY')}
@@ -81,14 +83,21 @@ const App = () => {
               isVisible={exibirDatePicker}
               onConfirm={mudaData}
               onCancel={() => setExibirDatePicker(false)}
+              locale="pt_BR"
             />
 
-            <Input placeholder="Rua" onChangeText={(value) => setRua(value)} />
             <Input
+              icon="map"
+              placeholder="Rua"
+              onChangeText={(value) => setRua(value)}
+            />
+            <Input
+              icon="map-pin"
               placeholder="Bairro"
               onChangeText={(value) => setBairro(value)}
             />
             <Input
+              icon="home"
               placeholder="Cidade"
               onChangeText={(value) => setCidade(value)}
             />

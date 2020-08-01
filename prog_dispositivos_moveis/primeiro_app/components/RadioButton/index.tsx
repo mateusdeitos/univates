@@ -5,9 +5,10 @@ interface OptionsProps {
   label: string;
   value: number;
   activeColor: string;
+  customIcon?: JSX.Element;
 }
 
-interface SelectProps {
+export interface SelectProps {
   options: OptionsProps[];
   propsStyles?: {};
   initial: number;
