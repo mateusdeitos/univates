@@ -8,11 +8,16 @@ interface InputProps extends TextInputProperties {
   label?: string;
 }
 
-const Input: React.FC<InputProps> = ({label, icon, ...rest}) => {
+const Input: React.FC<InputProps> = ({
+  multiline = false,
+  label,
+  icon,
+  ...rest
+}) => {
   return (
     <>
       {label && <Label>{label}</Label>}
-      <Container>
+      <Container isMultiLine={multiline}>
         {icon && (
           <InputIcon name={icon} size={20} color={shade(0.2, '#4ec5f1')} />
         )}

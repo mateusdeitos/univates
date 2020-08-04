@@ -41,8 +41,8 @@ const CadastroProjetos: React.FC = ({navigation}: any) => {
         />
         <ScrollView style={{marginTop: 48}}>
           <Container>
-            <Input icon="home" label="Id do projeto" editable={false} />
-            <Input icon="home" label="Nome do projeto" editable={true} />
+            <Input icon="hash" label="Id do projeto" editable={false} />
+            <Input icon="at-sign" label="Nome do projeto" editable={true} />
             <DatePicker
               date={new Date()}
               display="default"

@@ -6,22 +6,14 @@ import Button from '../../../../components/Button';
 import {Container} from './styles';
 import {KeyboardAvoidingView, Alert} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
-import DatePicker from '../../../../components/DatePicker';
 import Picker from '../../../../components/DropDownPicker';
 import moment from 'moment';
+import RadioButton from '../../../../components/RadioButton';
 
 const CadastroRequisitos: React.FC = ({navigation}: any) => {
-  const [exibirDatePicker, setExibirDatePicker] = useState(false);
-  const [dataInicial, setDataInicial] = useState(null);
+  const [dificuldade, setDificuldade] = useState(0);
+  const [importancia, setImportancia] = useState(0);
 
-  function mudaData(data: any) {
-    setExibirDatePicker(false);
-    setDataInicial(data || new Date());
-  }
-
-  function mostraDatePicker() {
-    setExibirDatePicker(true);
-  }
   function realizaCadastro() {
     const mensagem = '';
     Alert.alert('Sucesso', mensagem);
@@ -33,18 +25,25 @@ const CadastroRequisitos: React.FC = ({navigation}: any) => {
         behavior={undefined}
         enabled={false}>
         <Header
-          texto="Cadastro de projetos"
+          texto="Cadastro de requisitos"
           backgroundColor="#346FEF"
           icon={{
             iconName: 'menu',
             onPress: () => navigation.toggleDrawer(),
           }}
         />
-        <ScrollView style={{marginTop: 48}}>
+        <ScrollView style={{marginTop: 12}}>
           <Container>
-            <Input icon="home" label="Id do Requisito" editable={false} />
+            <Input icon="hash" label="Id do Requisito" editable={false} />
+            <Input
+              icon="calendar"
+              label="Data do registro"
+              editable={false}
+              defaultValue={moment(new Date()).format('DD/MM/YYYY')}
+            />
             <Picker
               label="Projeto"
+              searchablePlaceholder="Pesquise um projeto"
               placeholder="Selecione um projeto"
               items={[
                 {
@@ -57,33 +56,62 @@ const CadastroRequisitos: React.FC = ({navigation}: any) => {
                 },
               ]}
             />
-            <DatePicker
-              date={new Date()}
-              display="default"
-              isVisible={exibirDatePicker}
-              onConfirm={mudaData}
-              onCancel={() => setExibirDatePicker(false)}
-              locale="pt_BR"
-              input={{
-                icon: 'calendar',
-                label: 'Data de início',
-                onFocus: mostraDatePicker,
-                value: moment(dataInicial || new Date()).format('DD/MM/YYYY'),
-              }}
+            <RadioButton
+              label="Nível de Dificuldade"
+              options={[
+                {
+                  label: 'Baixo',
+                  value: 0,
+                  activeColor: '#4EC5F1',
+                },
+                {
+                  label: 'Médio',
+                  value: 1,
+                  activeColor: '#cb6506',
+                },
+                {
+                  label: 'Alto',
+                  value: 2,
+                  activeColor: '#ff0000',
+                },
+              ]}
+              initial={dificuldade}
+              onPress={(value) => setDificuldade(value)}
             />
-            <DatePicker
-              date={new Date()}
-              display="default"
-              isVisible={exibirDatePicker}
-              onConfirm={mudaData}
-              onCancel={() => setExibirDatePicker(false)}
-              locale="pt_BR"
-              input={{
-                icon: 'calendar',
-                label: 'Data estimada de término',
-                onFocus: mostraDatePicker,
-                value: moment(dataInicial || new Date()).format('DD/MM/YYYY'),
-              }}
+            <RadioButton
+              label="Nível de Importância"
+              options={[
+                {
+                  label: 'Baixo',
+                  value: 0,
+                  activeColor: '#4EC5F1',
+                },
+                {
+                  label: 'Médio',
+                  value: 1,
+                  activeColor: '#cb6506',
+                },
+                {
+                  label: 'Alto',
+                  value: 2,
+                  activeColor: '#ff0000',
+                },
+              ]}
+              initial={importancia}
+              onPress={(value) => setImportancia(value)}
+            />
+            <Input
+              icon="clock"
+              label="Horas/Homem estimado"
+              editable={true}
+              defaultValue="0"
+            />
+            <Input
+              icon="file-text"
+              label="Descrição do Requisito"
+              editable={true}
+              maxLength={255}
+              multiline={true}
             />
           </Container>
         </ScrollView>

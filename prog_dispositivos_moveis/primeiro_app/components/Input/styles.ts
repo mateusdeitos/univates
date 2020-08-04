@@ -2,9 +2,13 @@ import styled from 'styled-components/native';
 import {lighten} from 'polished';
 import Icon from 'react-native-vector-icons/Feather';
 
-export const Container = styled.View`
+interface InputProps {
+  isMultiLine: boolean;
+}
+
+export const Container = styled.View<InputProps>`
   width: 100%;
-  height: 60px;
+  height: ${(props) => (props.isMultiLine ? 120 : 60)}px;
   background: ${lighten(0.2, '#4ec5f1')};
   flex-direction: row;
   align-items: center;

@@ -1,22 +1,26 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import styled, {Label, Container} from './styles';
+import {Label} from './styles';
 import {lighten} from 'polished';
-import DropDownPicker, {
-  DropDownPickerProps,
-} from 'react-native-dropdown-picker';
+import DropDownPicker from 'react-native-dropdown-picker';
+import DropDownPickerProps from 'react-native-dropdown-picker';
 
 interface PickerProps extends DropDownPickerProps {
   label?: string;
+  searchablePlaceholder?: string;
 }
 
-const Picker: React.FC<PickerProps> = ({items, label, ...rest}) => {
+const Picker: React.FC<PickerProps> = ({
+  label,
+  searchablePlaceholder,
+  ...rest
+}) => {
   return (
     <>
       {label && <Label>{label}</Label>}
       <DropDownPicker
-        items={items}
         {...rest}
+        searchablePlaceholder={searchablePlaceholder || 'Pesquise um item'}
         style={{
           borderTopLeftRadius: 10,
           borderTopRightRadius: 10,
