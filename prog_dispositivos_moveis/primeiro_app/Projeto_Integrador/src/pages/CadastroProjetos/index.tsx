@@ -6,7 +6,7 @@ import Button from '../../../../components/Button';
 import {Container} from './styles';
 import {KeyboardAvoidingView, Alert} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import DatePicker from '../../../../components/DatePicker';
 import moment from 'moment';
 
 const CadastroProjetos: React.FC = ({navigation}: any) => {
@@ -15,8 +15,7 @@ const CadastroProjetos: React.FC = ({navigation}: any) => {
 
   function mudaData(data: any) {
     setExibirDatePicker(false);
-    const dataSelecionada = data || new Date();
-    setDataInicial(dataSelecionada);
+    setDataInicial(data || new Date());
   }
 
   function mostraDatePicker() {
@@ -43,25 +42,39 @@ const CadastroProjetos: React.FC = ({navigation}: any) => {
         <ScrollView style={{marginTop: 48}}>
           <Container>
             <Input icon="home" label="Id do projeto" editable={false} />
-            <Input icon="home" label="Nome do projeto" editable={false} />
-            <Input
-              icon="calendar"
-              label="Data de início"
-              onFocus={mostraDatePicker}
-              placeholder="Data de Nascimento"
-              value={moment(dataInicial || new Date()).format('DD/MM/YYYY')}
-            />
-            <DateTimePickerModal
+            <Input icon="home" label="Nome do projeto" editable={true} />
+            <DatePicker
               date={new Date()}
-              display="spinner"
+              display="default"
               isVisible={exibirDatePicker}
               onConfirm={mudaData}
               onCancel={() => setExibirDatePicker(false)}
               locale="pt_BR"
+              input={{
+                icon: 'calendar',
+                label: 'Data de início',
+                onFocus: mostraDatePicker,
+                value: moment(dataInicial || new Date()).format('DD/MM/YYYY'),
+              }}
             />
-            <Button onPress={realizaCadastro}>Cadastrar</Button>
+            <DatePicker
+              date={new Date()}
+              display="default"
+              isVisible={exibirDatePicker}
+              onConfirm={mudaData}
+              onCancel={() => setExibirDatePicker(false)}
+              locale="pt_BR"
+              input={{
+                icon: 'calendar',
+                label: 'Data estimada de término',
+                onFocus: mostraDatePicker,
+                value: moment(dataInicial || new Date()).format('DD/MM/YYYY'),
+              }}
+            />
           </Container>
         </ScrollView>
+
+        <Button onPress={realizaCadastro}>Cadastrar</Button>
       </KeyboardAvoidingView>
     </>
   );
