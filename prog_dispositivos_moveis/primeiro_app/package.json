@@ -21,6 +21,7 @@
     "polished": "^3.6.5",
     "react": "16.13.1",
     "react-native": "0.63.0",
+    "react-native-dropdown-picker": "^3.1.11",
     "react-native-floating-label-input": "^1.1.0",
     "react-native-gesture-handler": "^1.7.0",
     "react-native-modal-datetime-picker": "^8.7.1",
