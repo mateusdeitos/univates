@@ -25,3 +25,9 @@ export const TextInput = styled.TextInput`
 export const InputIcon = styled(Icon)`
   margin-right: 8px;
 `;
+
+export const Label = styled.Text`
+  align-self: flex-start;
+  margin-bottom: 4px;
+  color: #a6a6a6;
+`;
