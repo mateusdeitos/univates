@@ -11,12 +11,35 @@ import moment from 'moment';
 import RadioButton from '../../../../components/RadioButton';
 
 const CadastroRequisitos: React.FC = ({navigation}: any) => {
-  const [dificuldade, setDificuldade] = useState(0);
-  const [importancia, setImportancia] = useState(0);
+  const [projetoSelecionado, setProjetoSelecionado] = useState(null);
+  const [idRequisito, setIdRequisito] = useState(1);
+  const [dataRegistro] = useState(new Date());
+  const [nivelDificuldade, setNivelDificuldade] = useState(0);
+  const [nivelImportancia, setNivelImportancia] = useState(0);
+  const [horasHomem, setHorasHomem] = useState(0);
+  const [descricaoRequisito, setDescricaoRequisito] = useState('');
+  const [tipoRequisito, setTipoRequisito] = useState(0);
 
   function realizaCadastro() {
-    const mensagem = '';
+    const mensagem =
+      `Projeto selecionado: ${projetoSelecionado}\n` +
+      `Id do requisito: ${idRequisito}\n` +
+      `Data do registro: ${dataRegistro}\n` +
+      `Tipo do requisito: ${tipoRequisito}\n` +
+      `Nível de dificuldade: ${nivelDificuldade}\n` +
+      `Nível de Importância: ${nivelImportancia}\n` +
+      `Horas/Homem: ${horasHomem}\n` +
+      `Descrição: ${descricaoRequisito}\n`;
     Alert.alert('Sucesso', mensagem);
+    inicializaForm();
+  }
+  function inicializaForm() {
+    setIdRequisito(idRequisito + 1);
+    setTipoRequisito(0);
+    setNivelDificuldade(0);
+    setNivelImportancia(0);
+    setDescricaoRequisito('');
+    setHorasHomem(0);
   }
   return (
     <>
@@ -34,17 +57,11 @@ const CadastroRequisitos: React.FC = ({navigation}: any) => {
         />
         <ScrollView style={{marginTop: 12}}>
           <Container>
-            <Input icon="hash" label="Id do Requisito" editable={false} />
-            <Input
-              icon="calendar"
-              label="Data do registro"
-              editable={false}
-              defaultValue={moment(new Date()).format('DD/MM/YYYY')}
-            />
             <Picker
               label="Projeto"
               searchablePlaceholder="Pesquise um projeto"
               placeholder="Selecione um projeto"
+              onChangeItem={({value}) => setProjetoSelecionado(value)}
               items={[
                 {
                   label: 'Projeto A',
@@ -55,6 +72,35 @@ const CadastroRequisitos: React.FC = ({navigation}: any) => {
                   value: '2',
                 },
               ]}
+            />
+            <Input
+              icon="hash"
+              label="Id do Requisito"
+              editable={false}
+              value={idRequisito.toString()}
+            />
+            <Input
+              icon="calendar"
+              label="Data do registro"
+              editable={false}
+              defaultValue={moment(dataRegistro).format('DD/MM/YYYY')}
+            />
+            <RadioButton
+              label="Tipo do requisito"
+              options={[
+                {
+                  label: 'Funcional',
+                  value: 0,
+                  activeColor: '#4EC5F1',
+                },
+                {
+                  label: 'Não Funcional',
+                  value: 1,
+                  activeColor: '#14ad00',
+                },
+              ]}
+              initial={tipoRequisito}
+              onPress={(value) => setTipoRequisito(value)}
             />
             <RadioButton
               label="Nível de Dificuldade"
@@ -75,8 +121,8 @@ const CadastroRequisitos: React.FC = ({navigation}: any) => {
                   activeColor: '#ff0000',
                 },
               ]}
-              initial={dificuldade}
-              onPress={(value) => setDificuldade(value)}
+              initial={nivelDificuldade}
+              onPress={(value) => setNivelDificuldade(value)}
             />
             <RadioButton
               label="Nível de Importância"
@@ -97,21 +143,27 @@ const CadastroRequisitos: React.FC = ({navigation}: any) => {
                   activeColor: '#ff0000',
                 },
               ]}
-              initial={importancia}
-              onPress={(value) => setImportancia(value)}
+              initial={nivelImportancia}
+              onPress={(value) => setNivelImportancia(value)}
             />
             <Input
               icon="clock"
               label="Horas/Homem estimado"
               editable={true}
-              defaultValue="0"
+              keyboardType="number-pad"
+              defaultValue={horasHomem.toString()}
+              onChangeText={(value) => setHorasHomem(Number(value))}
             />
             <Input
               icon="file-text"
               label="Descrição do Requisito"
-              editable={true}
+              editable
               maxLength={255}
-              multiline={true}
+              multiline
+              numberOfLines={5}
+              textAlignVertical="top"
+              value={descricaoRequisito}
+              onChangeText={(value) => setDescricaoRequisito(value)}
             />
           </Container>
         </ScrollView>

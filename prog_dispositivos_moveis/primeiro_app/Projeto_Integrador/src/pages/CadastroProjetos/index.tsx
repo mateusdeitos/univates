@@ -1,30 +1,59 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useState, useCallback} from 'react';
 import Header from '../../../../components/Header';
 import Input from '../../../../components/Input';
 import Button from '../../../../components/Button';
 import {Container} from './styles';
-import {KeyboardAvoidingView, Alert} from 'react-native';
+import {KeyboardAvoidingView, ToastAndroid, Keyboard} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import DatePicker from '../../../../components/DatePicker';
 import moment from 'moment';
 
 const CadastroProjetos: React.FC = ({navigation}: any) => {
-  const [exibirDatePicker, setExibirDatePicker] = useState(false);
-  const [dataInicial, setDataInicial] = useState(null);
+  const [exibirDatePickerInicial, setExibirDatePickerInicial] = useState(false);
+  const [exibirDatePickerFinal, setExibirDatePickerFinal] = useState(false);
+  const [dataInicial, setDataInicial] = useState(new Date());
+  const [dataConclusao, setDataConclusao] = useState(new Date());
+  const [idProjeto, setIdProjeto] = useState(1);
+  const [nomeProjeto, setNomeProjeto] = useState('');
 
-  function mudaData(data: any) {
-    setExibirDatePicker(false);
-    setDataInicial(data || new Date());
-  }
+  const mudaDataInicial = useCallback((data: any) => {
+    setExibirDatePickerInicial(false);
+    setDataInicial(data);
+  }, []);
 
-  function mostraDatePicker() {
-    setExibirDatePicker(true);
-  }
-  function realizaCadastro() {
-    const mensagem = '';
-    Alert.alert('Sucesso', mensagem);
-  }
+  const mudaDataConclusao = useCallback((data: any) => {
+    setExibirDatePickerFinal(false);
+    setDataConclusao(data);
+  }, []);
+
+  const inicializaForm = useCallback(() => {
+    setIdProjeto(idProjeto + 1);
+    setExibirDatePickerFinal(false);
+    setExibirDatePickerInicial(false);
+    setDataInicial(new Date());
+    setDataConclusao(new Date());
+    setNomeProjeto('');
+  }, [idProjeto]);
+
+  const realizaCadastro = useCallback(() => {
+    ToastAndroid.showWithGravity(
+      'Projeto Criado!',
+      ToastAndroid.LONG,
+      ToastAndroid.CENTER,
+    );
+    inicializaForm();
+  }, [inicializaForm]);
+
+  const exibeDatePickerInicial = useCallback(() => {
+    Keyboard.dismiss();
+    setExibirDatePickerInicial(true);
+  }, []);
+  const exibeDatePickerFinal = useCallback(() => {
+    Keyboard.dismiss();
+    setExibirDatePickerFinal(true);
+  }, []);
+
   return (
     <>
       <KeyboardAvoidingView
@@ -39,36 +68,47 @@ const CadastroProjetos: React.FC = ({navigation}: any) => {
             onPress: () => navigation.toggleDrawer(),
           }}
         />
-        <ScrollView style={{marginTop: 48}}>
+        <ScrollView style={{marginTop: 12}}>
           <Container>
-            <Input icon="hash" label="Id do projeto" editable={false} />
-            <Input icon="at-sign" label="Nome do projeto" editable={true} />
+            <Input
+              icon="hash"
+              label="Id do projeto"
+              editable={false}
+              defaultValue={idProjeto.toString()}
+            />
+            <Input
+              icon="at-sign"
+              label="Nome do projeto"
+              editable={true}
+              onChangeText={(data) => setNomeProjeto(data)}
+              defaultValue={nomeProjeto}
+            />
             <DatePicker
               date={new Date()}
-              display="default"
-              isVisible={exibirDatePicker}
-              onConfirm={mudaData}
-              onCancel={() => setExibirDatePicker(false)}
+              display="calendar"
+              isVisible={exibirDatePickerInicial}
+              onConfirm={(value) => mudaDataInicial(value)}
+              onCancel={() => setExibirDatePickerInicial(false)}
               locale="pt_BR"
               input={{
                 icon: 'calendar',
                 label: 'Data de início',
-                onFocus: mostraDatePicker,
-                value: moment(dataInicial || new Date()).format('DD/MM/YYYY'),
+                onFocus: exibeDatePickerInicial,
+                value: moment(dataInicial).format('DD/MM/YYYY'),
               }}
             />
             <DatePicker
               date={new Date()}
-              display="default"
-              isVisible={exibirDatePicker}
-              onConfirm={mudaData}
-              onCancel={() => setExibirDatePicker(false)}
+              display="calendar"
+              isVisible={exibirDatePickerFinal}
+              onConfirm={(value) => mudaDataConclusao(value)}
+              onCancel={() => setExibirDatePickerFinal(false)}
               locale="pt_BR"
               input={{
                 icon: 'calendar',
                 label: 'Data estimada de término',
-                onFocus: mostraDatePicker,
-                value: moment(dataInicial || new Date()).format('DD/MM/YYYY'),
+                onFocus: exibeDatePickerFinal,
+                value: moment(dataConclusao).format('DD/MM/YYYY'),
               }}
             />
           </Container>

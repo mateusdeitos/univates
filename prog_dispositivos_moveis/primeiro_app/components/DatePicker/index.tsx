@@ -1,10 +1,9 @@
 import React from 'react';
 import Input from '../Input';
-import {TextInputProperties} from 'react-native';
+import {TextInputProperties, Keyboard} from 'react-native';
 import DateTimePickerModal, {
   DateTimePickerProps,
 } from 'react-native-modal-datetime-picker';
-import moment from 'moment';
 
 interface InputProps extends TextInputProperties {
   icon?: string;
@@ -13,7 +12,6 @@ interface InputProps extends TextInputProperties {
 
 interface DatePickerProps extends DateTimePickerProps {
   input: InputProps;
-  dataInicial?: Date;
   display?: 'spinner' | 'default' | 'clock' | 'calendar' | undefined;
 }
 
@@ -21,7 +19,6 @@ const DatePicker: React.FC<DatePickerProps> = ({
   input,
   onCancel,
   onConfirm,
-  dataInicial,
   locale,
   display,
   isVisible,
@@ -34,11 +31,11 @@ const DatePicker: React.FC<DatePickerProps> = ({
         onBlur={input.onBlur}
         onFocus={input.onFocus}
         placeholder={input.placeholder}
-        value={moment(dataInicial || new Date()).format('DD/MM/YYYY')}
+        value={input.value}
+        onKeyPress={() => Keyboard.dismiss()}
         {...input}
       />
       <DateTimePickerModal
-        date={new Date()}
         display={display}
         isVisible={isVisible}
         onConfirm={onConfirm}

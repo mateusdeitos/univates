@@ -10,7 +10,7 @@ const AppRoutes: React.FC = () => {
   return (
     <>
       <App.Navigator
-        drawerType="slide"
+        drawerType="front"
         drawerStyle={{backgroundColor: '#F4F4F4'}}>
         <App.Screen name="Projetos" component={CadastroProjetos} />
         <App.Screen name="Requisitos" component={CadastroRequisitos} />

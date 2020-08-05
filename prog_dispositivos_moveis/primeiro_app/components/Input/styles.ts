@@ -2,13 +2,13 @@ import styled from 'styled-components/native';
 import {lighten} from 'polished';
 import Icon from 'react-native-vector-icons/Feather';
 
-interface InputProps {
-  isMultiLine: boolean;
+interface ContainerProps {
+  customHeight: number;
 }
 
-export const Container = styled.View<InputProps>`
+export const Container = styled.View<ContainerProps>`
   width: 100%;
-  height: ${(props) => (props.isMultiLine ? 120 : 60)}px;
+  height: ${(props) => (props.customHeight > 0 ? props.customHeight : 60)}px;
   background: ${lighten(0.2, '#4ec5f1')};
   flex-direction: row;
   align-items: center;
@@ -21,7 +21,7 @@ export const Container = styled.View<InputProps>`
 
 export const TextInput = styled.TextInput`
   flex: 1;
-  /* color: #312e38; */
+  height: 100%;
   font-size: 16px;
   font-family: 'Roboto-Regular';
 `;
