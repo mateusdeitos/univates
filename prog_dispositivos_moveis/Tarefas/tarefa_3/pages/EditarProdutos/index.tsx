@@ -24,18 +24,19 @@ const EditarProdutos: React.FC<TelaDetalhesProps> = ({ route }) => {
 
     return (
         <View style={styles.container}>
-            <Input 
-                label="Id" 
-                editable={false} 
+            <Input
+                label="Id"
+                editable={false}
                 value={id.toString()} />
-            <Input 
-                label="Descrição" 
-                defaultValue={descricao} 
-                onChangeText={(value) => setNovaDescricao(value)}/>
-            <Input 
-                label="Quantidade" 
-                keyboardType="number-pad" 
-                defaultValue={quantidade.toString()} 
+            <Input
+                label="Descrição"
+                defaultValue={descricao}
+                onChangeText={(value) => setNovaDescricao(value)}
+            />
+            <Input
+                label="Quantidade"
+                keyboardType="number-pad"
+                defaultValue={quantidade.toString()}
                 onChangeText={(value) => setNovaQuantidade(Number(value))} />
             <Button onPress={salvaProduto}>Salvar</Button>
         </View>);

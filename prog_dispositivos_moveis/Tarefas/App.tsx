@@ -10,13 +10,13 @@ const App = () => {
   useEffect(() => {
     db.transaction(tr => {
         tr.executeSql("create table if not exists item (id integer primary key autoincrement, descricao text, quantidade integer);");
-        // tr.executeSql('delete from item');
-        // tr.executeSql('insert into item (descricao, quantidade) values (?, ?)', ['Produto A', Math.ceil(Math.random() * 100)]);
-        // tr.executeSql('insert into item (descricao, quantidade) values (?, ?)', ['Produto B', Math.ceil(Math.random() * 100)]);
-        // tr.executeSql('insert into item (descricao, quantidade) values (?, ?)', ['Produto C', Math.ceil(Math.random() * 100)]);
-        // tr.executeSql('insert into item (descricao, quantidade) values (?, ?)', ['Produto D', Math.ceil(Math.random() * 100)]);
-        // tr.executeSql('insert into item (descricao, quantidade) values (?, ?)', ['Produto E', Math.ceil(Math.random() * 100)]);
-        // tr.executeSql('insert into item (descricao, quantidade) values (?, ?)', ['Produto F', Math.ceil(Math.random() * 100)]);
+        tr.executeSql('delete from item');
+        tr.executeSql('insert into item (descricao, quantidade) values (?, ?)', ['Produto A', Math.ceil(Math.random() * 100)]);
+        tr.executeSql('insert into item (descricao, quantidade) values (?, ?)', ['Produto B', Math.ceil(Math.random() * 100)]);
+        tr.executeSql('insert into item (descricao, quantidade) values (?, ?)', ['Produto C', Math.ceil(Math.random() * 100)]);
+        tr.executeSql('insert into item (descricao, quantidade) values (?, ?)', ['Produto D', Math.ceil(Math.random() * 100)]);
+        tr.executeSql('insert into item (descricao, quantidade) values (?, ?)', ['Produto E', Math.ceil(Math.random() * 100)]);
+        tr.executeSql('insert into item (descricao, quantidade) values (?, ?)', ['Produto F', Math.ceil(Math.random() * 100)]);
 
     });
 

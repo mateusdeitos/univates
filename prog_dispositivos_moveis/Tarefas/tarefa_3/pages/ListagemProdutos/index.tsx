@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Text, View, ScrollView, TouchableOpacity, FlatList, SafeAreaView, Alert } from 'react-native';
+import React, { useState, useCallback } from 'react';
+import { Text, View, TouchableOpacity, FlatList, SafeAreaView, Alert } from 'react-native';
 import styles from './styles';
 import { db } from '../../database/db';
 import { Feather } from '@expo/vector-icons'
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { Snackbar, ThemeProvider } from 'react-native-paper'
 
 interface Item {
     id: number;
@@ -49,6 +50,8 @@ const ItemComponent: React.FC<ItemComponent> = (itemComponent) => {
 const ListagemProdutos: React.FC = () => {
     const navigation = useNavigation();
     const [data, setData] = useState<Item[]>([]);
+    const [showSnackbar, setShowSnackbar] = useState(false);
+    const [deletedItem, setDeletedItem] = useState<Item>();
 
     // Utilizei UseFocusEffect para que ao retornar da tela de Edição atualize a listagem
     // É necessário utilizar o useCallback para evitar um loop infinito
@@ -64,7 +67,7 @@ const ListagemProdutos: React.FC = () => {
         }, [navigation])
     )
 
-    const deleteItem = useCallback((id: number) => {
+    const deleteItem = useCallback(({ descricao, id, quantidade }: Item) => {
         db.transaction(tr => {
             tr.executeSql('delete from item where id = ?', [id]);
             tr.executeSql('select * from item', [], (_, { rows }) => {
@@ -73,7 +76,8 @@ const ListagemProdutos: React.FC = () => {
                 setData(_array);
             });
         });
-
+        setDeletedItem({ id, descricao, quantidade });
+        setShowSnackbar(true);
     }, []);
 
     const editItem = useCallback(({ descricao, id, quantidade }: Item) => {
@@ -93,27 +97,34 @@ const ListagemProdutos: React.FC = () => {
                     renderItem={({ item }) => (
                         <ItemComponent
                             item={item}
-                            onDelete={() => deleteItem(item.id)}
+                            onDelete={() => deleteItem(item)}
                             onEdit={() => editItem(item)}
                         />
                     )}
-                    // numColumns={2}
                     keyExtractor={item => item.id.toString()}
                     ListFooterComponent={<View />}
                     ListFooterComponentStyle={{ height: 80 }}
+
                 />
 
-                {/* {data.map(item => (
-                    <ItemComponent
-                        id={item.id}
-                        key={item.id}
-                        descricao={item.descricao}
-                        quantidade={item.quantidade}
-                    />
-                ))} */}
-
             </SafeAreaView>
-        </View>
+
+            {showSnackbar &&
+                <View style={{flex: 1, justifyContent: "space-between"}}>
+                    <Snackbar
+                        visible={showSnackbar}
+                        onDismiss={() => setShowSnackbar(false)}
+                        duration={2000}
+                        action={{
+                            label: 'Ok',
+                            
+                            onPress: () => setShowSnackbar(false)
+                        }}
+                    >
+                        {deletedItem?.descricao} foi deletado
+                    </Snackbar>
+                </View>}
+        </ View>
     )
 }
 

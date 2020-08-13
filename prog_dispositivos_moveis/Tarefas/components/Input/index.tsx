@@ -8,7 +8,7 @@ interface InputProps extends TextInputProperties {
   label?: string;
 }
 
-const Input: React.FC<InputProps> = ({label, icon, ...rest}) => {
+const Input: React.FC<InputProps> = ({ label, icon, ...rest }) => {
   const [customHeight, setCustomHeight] = useState(60);
   return (
     <>
