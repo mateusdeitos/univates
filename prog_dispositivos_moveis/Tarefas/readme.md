@@ -7,5 +7,5 @@
 ## Demonstração do app
 
 <p align="center">
-  <img width="250" src="prog_dispositivos_moveis/Tarefas/tarefa_3/.prints/WhatsApp-Video-2020-08-13-at-08.28.05.gif"/>
+  <img width="250" src="tarefa_3/.prints/demo.gif"/>
 </p>
