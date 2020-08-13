@@ -1,22 +1,22 @@
 import { RouteProp } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
+import { DrawerNavigationProp } from '@react-navigation/drawer';
 
 
 interface DetalhesProps {
-    id: number;
-    descricao: string;
-    quantidade: number;
+    id?: number;
+    descricao?: string;
+    quantidade?: number;
 }
 
-export type RootStackParamList = {
+export type RootParamList = {
     Listagem: undefined;
     Detalhes: DetalhesProps;
 };
 
-type TelaDetalhesType = RouteProp<RootStackParamList, 'Detalhes'>;
-type TelaDetalhesNavigatiionType = StackNavigationProp<RootStackParamList, 'Detalhes'>;
+type PropsType = RouteProp<RootParamList, 'Detalhes'>;
+type PropsNavigationType = DrawerNavigationProp<RootParamList, 'Detalhes'>;
 
 export type TelaDetalhesProps = {
-    route: TelaDetalhesType;
-    navigation: TelaDetalhesNavigatiionType;
+    route: PropsType;
+    navigation: PropsNavigationType;
 }
