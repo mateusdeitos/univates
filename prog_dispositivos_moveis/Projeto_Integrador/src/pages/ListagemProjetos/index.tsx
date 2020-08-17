@@ -1,31 +1,62 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, KeyboardAvoidingView, SafeAreaView, FlatList } from 'react-native';
 import api from '../../services/api';
-import {RectButton} from 'react-native-gesture-handler';
+import Projeto from '../../components/Projeto';
+import Header from '../../components/Header';
+import { Container } from './styles';
+import { TelaProjetosProps } from '../../routes/app.routes';
 
-interface Projeto {
+interface ProjetoData {
     id: number;
     descricao: string;
     data_ini: Date;
     data_fim: Date;
 }
 
-const ListagemProjetos: React.FC = () => {
-    const [projetos, setProjetos] = useState<Projeto[]>([]);
+const ListagemProjetos: React.FC<TelaProjetosProps> = ({ navigation }) => {
+    const [projetos, setProjetos] = useState<ProjetoData[]>([]);
 
     useEffect(() => {
         api.get('/projeto')
             .then(response => setProjetos(response.data))
             .catch(error => console.log({ error }));
+
     }, [])
 
     return (
-        <RectButton>
-            <Text>id: 1</Text>
-            <Text>descricao: Projeto bonito</Text>
-            <Text>Data de início: 01/08/2020</Text>
-            <Text>Data fim: 01/08/2020</Text>
-        </RectButton>
+        <>
+            <KeyboardAvoidingView
+                style={{ flex: 1 }}
+                behavior={undefined}
+                enabled={false}>
+                <Header
+                    texto="Listagem de projetos"
+                    backgroundColor="#346FEF"
+                    icon={{
+                        iconName: 'menu',
+                        onPress: () => navigation.toggleDrawer(),
+                    }}
+                />
+                <Container>
+                    <SafeAreaView style={{ marginTop: 12 }}>
+                        <FlatList
+                            data={projetos}
+                            renderItem={({ item }) => (
+                                <Projeto
+                                    id={item.id}
+                                    descricao={item.descricao}
+                                    dataIni={item.data_ini}
+                                    dataFim={item.data_fim}
+                                />
+                            )}
+                            keyExtractor={projeto => projeto.id.toString()}
+                            ListFooterComponent={<View />}
+                            ListFooterComponentStyle={{ height: 80 }}
+                        />
+                    </SafeAreaView>
+                </Container>
+            </KeyboardAvoidingView>
+        </>
     )
 }
 
