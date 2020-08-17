@@ -1,0 +1,32 @@
+{
+    "projeto": [
+        {
+            "id": 1,
+            "descricao": "Projeto bonito",
+            "data_ini": "01/08/2020",
+            "data_fim": "01/08/2020"
+        }
+    ],
+    "requisitos": [
+        {
+            "id": 1,
+            "id_projeto": 1,
+            "descricao": "Requisito de teste",
+            "data_registro": "17/08/2020",
+            "nivel_importancia": 1,
+            "nivel_dificuldade": 2,
+            "tempo": 25.10,
+            "tipo_requisito": 1
+        }
+    ],
+    "tipo_requisito": [
+        {
+            "id": 1,
+            "tipo": "Funcional"
+        },
+        {
+            "id": 2,
+            "tipo": "Não Funcional"
+        }
+    ]
+}
