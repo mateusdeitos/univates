@@ -1,23 +1,11 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import ListagemProjetos from '../pages/ListagemProjetos';
-import CadastroProjetos from '../pages/CadastroProjetos';
-import CadastroRequisitos from '../pages/CadastroRequisitos';
-import { RouteProp } from "@react-navigation/native";
-import { DrawerNavigationProp } from '@react-navigation/drawer';
+import { createDrawerNavigator, DrawerNavigationProp } from '@react-navigation/drawer';
+import ProjetoStack from './projeto.routes';
+import { RouteProp } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
-
-interface ProjetosProps {
-  id?: number;
-  descricao?: string;
-  data_ini: Date;
-  data_fim: Date;
-}
-interface RequisitosProps {
-  id: number;
-}
-interface CadastroProjetoProps {
+export interface CadastroProjetoProps {
   id: number;
   descricao?: string;
   data_ini?: Date;
@@ -25,31 +13,57 @@ interface CadastroProjetoProps {
   manutencao: 'novo' | 'editar';
 }
 
+interface ListagemRequisitosProps {
+  id_projeto: number;
+}
+
+export interface CadastroRequisitosProps {
+  id?: number;
+  id_projeto: number;
+  descricao?: string;
+  data_registro?: Date;
+  nivel_importancia?: number;
+  nivel_dificuldade?: number;
+  tempo?: number;
+  tipo_requisito?: number;
+  manutencao: 'novo' | 'editar';
+}
+
+type ListagemProjetosPropsType = RouteProp<RootParamList, 'ListagemProjetos'>;
+type ListagemProjetosPropsNavigationType = DrawerNavigationProp<RootParamList, 'ListagemProjetos'> & StackNavigationProp<RootParamList, 'ListagemProjetos'>;
+
+type CadastroProjetosPropsType = RouteProp<RootParamList, 'CadastroProjetos'>;
+type CadastroProjetosPropsNavigationType = StackNavigationProp<RootParamList, 'CadastroProjetos'>;
+type CadastroRequisitosPropsType = RouteProp<RootParamList, 'CadastroRequisitos'>;
+type CadastroRequisitosPropsNavigationType = StackNavigationProp<RootParamList, 'CadastroRequisitos'>;
+type ListagemRequisitosPropsType = RouteProp<RootParamList, 'ListagemRequisitos'>;
+type ListagemRequisitosPropsNavigationType = StackNavigationProp<RootParamList, 'ListagemRequisitos'>;
+
+export type TelaCadastroProjetosProps = {
+    route: CadastroProjetosPropsType;
+    navigation: CadastroProjetosPropsNavigationType;
+}
+export type TelaListagemRequisitosProps = {
+    route: ListagemRequisitosPropsType;
+    navigation: ListagemRequisitosPropsNavigationType;
+}
+export type TelaCadastroRequisitosProps = {
+    route: CadastroRequisitosPropsType;
+    navigation: CadastroRequisitosPropsNavigationType;
+}
+export type TelaListagemProjetosProps = {
+  route: ListagemProjetosPropsType;
+  navigation: ListagemProjetosPropsNavigationType;
+}
+
 type RootParamList = {
-  Requisitos: RequisitosProps;
-  Projetos: ProjetosProps;
+  ListagemProjetos: undefined;
   CadastroProjetos: CadastroProjetoProps;
+  ListagemRequisitos: ListagemRequisitosProps;
+  CadastroRequisitos: CadastroRequisitosProps;
 };
 
-type ProjetosPropsType = RouteProp<RootParamList, 'Projetos'>;
-type ProjetosPropsNavigationType = DrawerNavigationProp<RootParamList, 'Projetos'>;
-type RequisitosPropsType = RouteProp<RootParamList, 'Requisitos'>;
-type RequisitosPropsNavigationType = DrawerNavigationProp<RootParamList, 'Requisitos'>;
-type CadastroProjetosPropsType = RouteProp<RootParamList, 'CadastroProjetos'>;
-type CadastroProjetosPropsNavigationType = DrawerNavigationProp<RootParamList, 'CadastroProjetos'>;
 
-export type TelaProjetosProps = {
-  route: ProjetosPropsType;
-  navigation: ProjetosPropsNavigationType;
-}
-export type TelaRequisitosProps = {
-  route: RequisitosPropsType;
-  navigation: RequisitosPropsNavigationType;
-}
-export type TelaCadastroProjetosProps = {
-  route: CadastroProjetosPropsType;
-  navigation: CadastroProjetosPropsNavigationType;
-}
 const App = createDrawerNavigator<RootParamList>();
 
 const AppRoutes: React.FC = () => {
@@ -58,9 +72,7 @@ const AppRoutes: React.FC = () => {
       <App.Navigator
         drawerType="front"
         drawerStyle={{ backgroundColor: '#F4F4F4' }}>
-        <App.Screen name="Projetos" component={ListagemProjetos} />
-        <App.Screen name="Requisitos" component={CadastroRequisitos} />
-        <App.Screen name="CadastroProjetos" component={CadastroProjetos} />
+        <App.Screen name="ListagemProjetos" options={{ title: 'Projetos' }} component={ProjetoStack} />
       </App.Navigator>
     </>
   );

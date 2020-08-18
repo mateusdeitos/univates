@@ -6,15 +6,18 @@ import { Button } from 'react-native-paper';
 interface Props extends ViewProps {
     id: number;
     descricao: string;
-    dataIni?: Date;
-    dataFim?: Date;
+    dataRegistro: Date;
+    nivelImportancia: number;
+    nivelDificuldade: number;
+    tipoRequisito: number;
+    tempo: number;
     onLook?(): void;
     onEdit?(): void;
     onDelete?(): void;
 }
 
 
-const Projeto: React.FC<Props> = ({ id, descricao, dataFim, dataIni, onLook, onEdit, onDelete, ...rest }) => {
+const Requisito: React.FC<Props> = ({ id, descricao, dataRegistro, nivelImportancia, nivelDificuldade, tempo, tipoRequisito, onLook, onEdit, onDelete, ...rest }) => {
     return (
         <>
 
@@ -26,14 +29,9 @@ const Projeto: React.FC<Props> = ({ id, descricao, dataFim, dataIni, onLook, onE
                     <DescricaoText>{descricao}</DescricaoText>
                 </DescricaoTextContainer>
                 <DataContainer>
-                    <DataIniText>Data de início: {dataIni}</DataIniText>
-                    <DataFimText>Data prevista: {dataFim}</DataFimText>
+                    <DataIniText>Data de registro: {dataRegistro}</DataIniText>
                 </DataContainer>
                 <ButtonContainer>
-                    <Button onPress={onLook}>
-                        <FontAwesome5 name="search" size={20} color="blue" />
-                        <ButtonText> Requisitos</ButtonText>
-                    </Button>
                     <Button onPress={onEdit}>
                         <FontAwesome5 name="edit" size={20} color="green" />
                         <ButtonText> Editar</ButtonText>
@@ -48,4 +46,4 @@ const Projeto: React.FC<Props> = ({ id, descricao, dataFim, dataIni, onLook, onE
     );
 };
 
-export default Projeto;
+export default Requisito;

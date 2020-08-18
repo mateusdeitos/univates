@@ -1,29 +1,32 @@
-import React, {useState} from 'react';
-import {TextInputProperties} from 'react-native';
-import {Container, TextInput, InputIcon, Label} from './styles';
-import {shade} from 'polished';
+import React, { useState } from 'react';
+import { TextInputProperties, Text } from 'react-native';
+import { Container, TextInput, InputIcon, Label } from './styles';
+import { shade } from 'polished';
 
 interface InputProps extends TextInputProperties {
   icon?: string;
   label?: string;
 }
 
-const Input: React.FC<InputProps> = ({label, icon, ...rest}) => {
+const Input: React.FC<InputProps> = ({ label, icon, editable, value, ...rest }) => {
   const [customHeight, setCustomHeight] = useState(60);
   return (
     <>
       {label && <Label>{label}</Label>}
-      <Container customHeight={customHeight}>
+      <Container customHeight={customHeight} backgroundColor={editable ? '#4ec5f1' : '#999591'}>
         {icon && (
-          <InputIcon name={icon} size={20} color={shade(0.2, '#4ec5f1')} />
+          <InputIcon name={icon} size={20} color={shade(0.2, editable ? '#4ec5f1' : '#999591')} />
         )}
-
-        <TextInput
-          {...rest}
-          onContentSizeChange={(event) =>
-            setCustomHeight(Math.max(60, event.nativeEvent.contentSize.height))
-          }
-        />
+        {editable ?
+          <TextInput
+            {...rest}
+            onContentSizeChange={(event) =>
+              setCustomHeight(Math.max(60, event.nativeEvent.contentSize.height))
+            }
+          />
+          :
+          <Text>{value}</Text>
+        }
       </Container>
     </>
   );

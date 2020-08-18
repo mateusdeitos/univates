@@ -2,7 +2,7 @@
 import React from 'react';
 import SwitchSelector from 'react-native-switch-selector';
 import {Label} from './styles';
-interface OptionsProps {
+export interface OptionsProps {
   label: string;
   value: number;
   activeColor: string;
