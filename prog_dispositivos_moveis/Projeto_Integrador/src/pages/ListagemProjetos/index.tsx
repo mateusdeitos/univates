@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, KeyboardAvoidingView, SafeAreaView, FlatList } from 'react-native';
 import api from '../../services/api';
 import Projeto from '../../components/Projeto';
 import Header from '../../components/Header';
 import { Container } from './styles';
 import { TelaProjetosProps } from '../../routes/app.routes';
+import FABButton from '../../components/FloatingActionButton';
+import { useFocusEffect } from '@react-navigation/native';
 
 interface ProjetoData {
     id: number;
@@ -16,12 +18,46 @@ interface ProjetoData {
 const ListagemProjetos: React.FC<TelaProjetosProps> = ({ navigation }) => {
     const [projetos, setProjetos] = useState<ProjetoData[]>([]);
 
-    useEffect(() => {
-        api.get('/projeto')
-            .then(response => setProjetos(response.data))
-            .catch(error => console.log({ error }));
+    useFocusEffect(
+        useCallback(() => {
+            api.get('/projeto')
+                .then(response => setProjetos(response.data))
+                .catch(error => console.log({ error }));
 
-    }, [])
+        }, []));
+
+    const addNovoProjeto = useCallback(() => {
+        api.get(`/projeto`)
+            .then(response => {
+                const projetos: ProjetoData[] = response.data;
+                console.log({ projetos })
+
+                const maiorId: number = projetos.length === 0 ? 1 :
+                    projetos
+                        .map(projeto => projeto.id)
+                        .sort((x, y) => {
+                            if (x < y) return 1;
+                            if (x > y) return -1;
+                            return 0;
+                        })[0];
+
+                navigation.navigate('CadastroProjetos', { id: maiorId + 1, manutencao: 'novo' });
+            });
+    }, [navigation]);
+
+    const editaProjeto = useCallback((projeto: ProjetoData) => {
+        console.log({projeto});
+        navigation.navigate('CadastroProjetos', {
+            ...projeto,
+            manutencao: 'editar',
+        });
+    }, [navigation]);
+
+    const deletaProjeto = useCallback(async (id: number) => {
+        await api.delete(`/projeto/${id}`);
+        const projetosFiltrados = projetos.filter(projeto => projeto.id !== id);
+        setProjetos(projetosFiltrados);
+    }, [projetos])
 
     return (
         <>
@@ -47,14 +83,18 @@ const ListagemProjetos: React.FC<TelaProjetosProps> = ({ navigation }) => {
                                     descricao={item.descricao}
                                     dataIni={item.data_ini}
                                     dataFim={item.data_fim}
+                                    onEdit={() => editaProjeto(item)}
+                                    onDelete={() => deletaProjeto(item.id)}
                                 />
                             )}
                             keyExtractor={projeto => projeto.id.toString()}
+
                             ListFooterComponent={<View />}
                             ListFooterComponentStyle={{ height: 80 }}
                         />
                     </SafeAreaView>
                 </Container>
+                <FABButton icon="plus" color="#346FEF" onPress={addNovoProjeto} />
             </KeyboardAvoidingView>
         </>
     )

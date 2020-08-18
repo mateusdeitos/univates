@@ -3,20 +3,37 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Header from '../../components/Header';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
+import { TelaCadastroProjetosProps } from '../../routes/app.routes';
 import { Container } from './styles';
 import { KeyboardAvoidingView, ToastAndroid, Keyboard } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import DatePicker from '../../components/DatePicker';
-import { FAB } from 'react-native-paper'
 import moment from 'moment';
+import api from '../../services/api';
 
-const CadastroProjetos: React.FC = ({ navigation }: any) => {
+interface Projeto {
+  id: number;
+  descricao: string;
+  data_ini: Date;
+  data_fim: Date;
+}
+
+const CadastroProjetos: React.FC<TelaCadastroProjetosProps> = ({ route, navigation }) => {
+  const { id, descricao, data_ini, data_fim, manutencao } = route.params;
   const [exibirDatePickerInicial, setExibirDatePickerInicial] = useState(false);
   const [exibirDatePickerFinal, setExibirDatePickerFinal] = useState(false);
   const [dataInicial, setDataInicial] = useState(new Date());
   const [dataConclusao, setDataConclusao] = useState(new Date());
-  const [idProjeto, setIdProjeto] = useState(1);
-  const [nomeProjeto, setNomeProjeto] = useState('');
+  const [descricaoProjeto, setDescricaoProjeto] = useState(descricao);
+
+  useEffect(() => {
+    console.log({ id, descricao, data_ini, data_fim, manutencao })
+    if (manutencao === 'editar') {
+      setDescricaoProjeto(descricao);
+      setDataInicial(moment(data_ini, 'DD/MM/YYYY').toDate());
+      setDataConclusao(moment(data_fim, 'DD/MM/YYYY').toDate());
+    }
+  }, [id, descricao, data_ini, data_fim, manutencao])
 
   const mudaDataInicial = useCallback((data: any) => {
     setExibirDatePickerInicial(false);
@@ -29,22 +46,12 @@ const CadastroProjetos: React.FC = ({ navigation }: any) => {
   }, []);
 
   const inicializaForm = useCallback(() => {
-    setIdProjeto(idProjeto + 1);
     setExibirDatePickerFinal(false);
     setExibirDatePickerInicial(false);
     setDataInicial(new Date());
     setDataConclusao(new Date());
-    setNomeProjeto('');
-  }, [idProjeto]);
-
-  const realizaCadastro = useCallback(() => {
-    ToastAndroid.showWithGravity(
-      'Projeto Criado!',
-      ToastAndroid.LONG,
-      ToastAndroid.CENTER,
-    );
-    inicializaForm();
-  }, [inicializaForm]);
+    setDescricaoProjeto('');
+  }, [id]);
 
   const exibeDatePickerInicial = useCallback(() => {
     Keyboard.dismiss();
@@ -54,6 +61,31 @@ const CadastroProjetos: React.FC = ({ navigation }: any) => {
     Keyboard.dismiss();
     setExibirDatePickerFinal(true);
   }, []);
+
+
+  const salvaProjeto = useCallback(async () => {
+
+
+    if (manutencao === 'editar') {
+
+      await api.put(`/projeto/${id}`, {
+        descricao: descricaoProjeto,
+        data_ini: moment(dataInicial, 'DD/MM/YYYY').format('DD/MM/YYYY'),
+        data_fim: moment(dataConclusao, 'DD/MM/YYYY').format('DD/MM/YYYY'),
+      });
+
+    } else {
+
+      await api.post('/projeto', {
+        id: id,
+        descricao: descricaoProjeto,
+        data_ini: moment(dataInicial, 'DD/MM/YYYY').format('DD/MM/YYYY'),
+        data_fim: moment(dataConclusao, 'DD/MM/YYYY').format('DD/MM/YYYY'),
+      });
+    }
+    inicializaForm();
+    navigation.goBack();
+  }, [inicializaForm, id, descricaoProjeto, dataInicial, dataConclusao, navigation]);
 
   return (
     <>
@@ -65,8 +97,11 @@ const CadastroProjetos: React.FC = ({ navigation }: any) => {
           texto="Cadastro de projetos"
           backgroundColor="#346FEF"
           icon={{
-            iconName: 'menu',
-            onPress: () => navigation.toggleDrawer(),
+            iconName: 'arrow-left',
+            onPress: () => {
+              inicializaForm();
+              navigation.goBack();
+            },
           }}
         />
         <ScrollView style={{ marginTop: 12 }}>
@@ -75,14 +110,14 @@ const CadastroProjetos: React.FC = ({ navigation }: any) => {
               icon="hash"
               label="Id do projeto"
               editable={false}
-              defaultValue={idProjeto.toString()}
+              defaultValue={id.toString()}
             />
             <Input
               icon="at-sign"
               label="Nome do projeto"
               editable={true}
-              onChangeText={(data) => setNomeProjeto(data)}
-              defaultValue={nomeProjeto}
+              onChangeText={(data) => setDescricaoProjeto(data)}
+              defaultValue={descricaoProjeto}
             />
             <DatePicker
               date={new Date()}
@@ -115,7 +150,7 @@ const CadastroProjetos: React.FC = ({ navigation }: any) => {
           </Container>
         </ScrollView>
 
-        <Button onPress={realizaCadastro}>Cadastrar</Button>
+        <Button onPress={salvaProjeto}>{manutencao === 'novo' ? 'Cadastrar' : 'Salvar'}</Button>
       </KeyboardAvoidingView>
     </>
   );

@@ -3,15 +3,14 @@ import { View, Text } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 
 
-export const Container = styled(RectButton)`
-    flex: 1;
+export const Container = styled.View`
     align-self: center;
     flex-grow: 1;
     flex-basis: 0;
     margin-bottom: 8px;
     background: #fff;
     border-color: #4EC5F1;
-    border-width: 2px;
+    border-width: 1px;
     border-radius: 8px;
     padding: 8px;
     width: 100%;
@@ -20,7 +19,6 @@ export const Container = styled(RectButton)`
     `}
 `;
 export const IdTextContainer = styled.View`
-    flex: 1;
     flex-direction: row;
     justify-content: flex-start;
     align-items: flex-start;
@@ -32,7 +30,6 @@ export const IdText = styled.Text`
 `;
 
 export const DescricaoTextContainer = styled.View`
-    flex: 1;
     flex-direction: row;
     justify-content: center;
     align-items: center;
@@ -45,7 +42,6 @@ export const DescricaoText = styled.Text`
     font-weight: bold;
 `;
 export const DataContainer = styled.View`
-    flex: 1;
     flex-direction: column;
     justify-content: space-between;
     padding: 8px;
@@ -57,4 +53,18 @@ export const DataIniText = styled.Text`
 export const DataFimText = styled.Text`
     font-size: 16px;
     color: #999591;
+`;
+export const ButtonContainer = styled.View`
+    flex-direction: row;
+    align-items: center;
+    border-color: #d0cece;
+    border-width: 1px;
+    border-radius: 8px;
+    justify-content: space-around;
+`;
+
+export const ButtonText = styled.Text`
+    font-size: 12px;
+    margin-left: 16px;
+    color: #d0cece;
 `;
