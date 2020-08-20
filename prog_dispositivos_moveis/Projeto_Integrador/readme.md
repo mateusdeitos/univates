@@ -17,14 +17,14 @@
 ## Demonstração do app
 
 <p align="center">
-  <img width="250" src="Projeto_Integrador/.prints/entrega-2/1.jpeg"/>
-  <img width="250" src="Projeto_Integrador/ssets/2.jpeg"/>
-  <img width="250" src="Projeto_Integrador/assets/3.jpeg"/>
-  <img width="250" src="Projeto_Integrador/assets/4.jpeg"/>
-  <img width="250" src="Projeto_Integrador/assets/6.jpeg"/>
-  <img width="250" src="Projeto_Integrador/assets/7.jpeg"/>
-  <img width="250" src="Projeto_Integrador/assets/8.jpeg"/>
-  <img width="250" src="Projeto_Integrador/assets/9.jpeg"/>
-  <img width="250" src="Projeto_Integrador/assets/10.jpeg"/>
+  <img width="250" src=".prints/entrega-2/1.jpeg"/>
+  <img width="250" src=".prints/entrega-2/2.jpeg"/>
+  <img width="250" src=".prints/entrega-2/3.jpeg"/>
+  <img width="250" src=".prints/entrega-2/4.jpeg"/>
+  <img width="250" src=".prints/entrega-2/6.jpeg"/>
+  <img width="250" src=".prints/entrega-2/7.jpeg"/>
+  <img width="250" src=".prints/entrega-2/8.jpeg"/>
+  <img width="250" src=".prints/entrega-2/9.jpeg"/>
+  <img width="250" src=".prints/entrega-2/10.jpeg"/>
 </p>
 
