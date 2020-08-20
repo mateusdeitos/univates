@@ -3,15 +3,12 @@ import {lighten} from 'polished';
 import Icon from 'react-native-vector-icons/Feather';
 
 interface ContainerProps {
-  customHeight: number;
   backgroundColor: string;
 }
 
 export const Container = styled.View<ContainerProps>`
   width: 100%;
-  height: ${(props) => (props.customHeight > 0 ? props.customHeight : 60)}px;
-  padding-top: ${(props) => (props.customHeight > 0 ? 8 : 0)}px;
-  padding-bottom: ${(props) => (props.customHeight > 0 ? 8 : 0)}px;
+  height: 60px;
   background: ${(props) => lighten(0.2, props.backgroundColor)};
   flex-direction: row;
   align-items: center;
@@ -20,18 +17,6 @@ export const Container = styled.View<ContainerProps>`
   margin-bottom: 8px;
   border-width: 2px;
   border-color: ${(props) => props.backgroundColor};
-`;
-
-export const TextInput = styled.TextInput`
-  flex: 1;
-  height: 100%;
-  font-size: 12px;
-  padding: 8px;
-  font-family: Poppins_400Regular;
-`;
-
-export const InputIcon = styled(Icon)`
-  margin-right: 8px;
 `;
 
 export const Label = styled.Text`

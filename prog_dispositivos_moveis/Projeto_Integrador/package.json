@@ -9,8 +9,11 @@
     "server": "json-server --host 10.0.0.110 db.json -p 3000"
   },
   "dependencies": {
+    "@expo-google-fonts/archivo": "^0.1.0",
+    "@expo-google-fonts/poppins": "^0.1.0",
     "@react-native-community/datetimepicker": "^2.6.0",
     "@react-native-community/masked-view": "0.1.10",
+    "@react-native-community/slider": "^3.0.3",
     "@react-navigation/drawer": "^5.8.7",
     "@react-navigation/native": "^5.7.2",
     "@react-navigation/stack": "^5.8.0",
@@ -19,6 +22,7 @@
     "axios": "^0.19.2",
     "expo": "~38.0.8",
     "expo-file-system": "~9.0.1",
+    "expo-font": "~8.2.1",
     "expo-notifications": "~0.3.3",
     "expo-push-notification-helper": "^0.4.0",
     "expo-sqlite": "~8.2.1",
@@ -39,6 +43,7 @@
     "react-native-screens": "~2.9.0",
     "react-native-snackbar": "^2.2.3",
     "react-native-switch-selector": "^2.0.6",
+    "react-native-timeline-flatlist": "^0.7.3",
     "react-native-vector-icons": "^7.0.0",
     "react-navigation": "^4.4.0",
     "styled-components": "^5.1.1"

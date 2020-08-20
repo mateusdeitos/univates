@@ -5,6 +5,7 @@ import {Label} from './styles';
 export interface OptionsProps {
   label: string;
   value: number;
+  selected?: boolean;
   activeColor: string;
   customIcon?: JSX.Element;
 }

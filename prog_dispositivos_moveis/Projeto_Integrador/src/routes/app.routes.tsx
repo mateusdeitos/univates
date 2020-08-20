@@ -4,9 +4,10 @@ import { createDrawerNavigator, DrawerNavigationProp } from '@react-navigation/d
 import ProjetoStack from './projeto.routes';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import Home from '../pages/Home';
 
 export interface CadastroProjetoProps {
-  id: number;
+  id?: number;
   descricao?: string;
   data_ini?: Date;
   data_fim?: Date;
@@ -29,6 +30,8 @@ export interface CadastroRequisitosProps {
   manutencao: 'novo' | 'editar';
 }
 
+type HomePropsType = RouteProp<RootParamList, 'Home'>;
+type HomePropsNavigationType = DrawerNavigationProp<RootParamList, 'Home'>;
 type ListagemProjetosPropsType = RouteProp<RootParamList, 'ListagemProjetos'>;
 type ListagemProjetosPropsNavigationType = DrawerNavigationProp<RootParamList, 'ListagemProjetos'> & StackNavigationProp<RootParamList, 'ListagemProjetos'>;
 
@@ -55,8 +58,13 @@ export type TelaListagemProjetosProps = {
   route: ListagemProjetosPropsType;
   navigation: ListagemProjetosPropsNavigationType;
 }
+export type TelaHomeProps = {
+  route: HomePropsType;
+  navigation: HomePropsNavigationType;
+}
 
 type RootParamList = {
+  Home: undefined;
   ListagemProjetos: undefined;
   CadastroProjetos: CadastroProjetoProps;
   ListagemRequisitos: ListagemRequisitosProps;
@@ -71,7 +79,9 @@ const AppRoutes: React.FC = () => {
     <>
       <App.Navigator
         drawerType="front"
+        initialRouteName="Home"
         drawerStyle={{ backgroundColor: '#F4F4F4' }}>
+        <App.Screen name="Home" options={{ title: 'Home' }} component={Home} />
         <App.Screen name="ListagemProjetos" options={{ title: 'Projetos' }} component={ProjetoStack} />
       </App.Navigator>
     </>

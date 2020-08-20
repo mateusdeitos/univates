@@ -5,7 +5,7 @@ import Input from '../../components/Input';
 import Button from '../../components/Button';
 import { TelaCadastroProjetosProps } from '../../routes/app.routes';
 import { Container } from './styles';
-import { KeyboardAvoidingView, ToastAndroid, Keyboard } from 'react-native';
+import { KeyboardAvoidingView, ToastAndroid, Keyboard, Platform } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import DatePicker from '../../components/DatePicker';
 import moment from 'moment';
@@ -107,8 +107,7 @@ const CadastroProjetos: React.FC<TelaCadastroProjetosProps> = ({ route, navigati
     <>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
-        behavior={undefined}
-        enabled={false}>
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <Header
           texto="Cadastro de projetos"
           backgroundColor="#346FEF"

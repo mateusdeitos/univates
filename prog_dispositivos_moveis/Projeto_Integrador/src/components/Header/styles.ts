@@ -7,7 +7,7 @@ interface HeaderProps {
 
 export const Container = styled.View<HeaderProps>`
   width: 100%;
-  height: 60px;
+  height: 90px;
   position: relative;
   background: ${(props) => props.backgroundColor};
   flex-direction: row;
@@ -16,12 +16,14 @@ export const Container = styled.View<HeaderProps>`
 `;
 
 export const HeaderText = styled.Text`
-  /* font-family: 'Roboto-Medium'; */
+  font-family: Archivo_700Bold;
   font-weight: bold;
   color: #fff;
-  font-size: 18px;
+  font-size: 24px;
   align-self: center;
-  margin-left: 16px;
+  margin-bottom: 60px;
+  margin-left: auto;
+  margin-right: auto;
 `;
 
 export const HeaderIcon = styled(IconButton)`

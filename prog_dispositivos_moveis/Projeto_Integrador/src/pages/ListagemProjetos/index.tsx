@@ -1,12 +1,15 @@
-import React, { useState, useCallback } from 'react';
-import { View, KeyboardAvoidingView, SafeAreaView, FlatList, Platform, StatusBar } from 'react-native';
+import React, { useState, useCallback, useEffect } from 'react';
+import { View, KeyboardAvoidingView, SafeAreaView, FlatList, RefreshControl, Platform, Text, Pressable } from 'react-native';
 import api from '../../services/api';
 import Projeto from '../../components/Projeto';
 import Header from '../../components/Header';
-import { Container } from './styles';
+import { Container, TotalBadge } from './styles';
 import { useFocusEffect } from '@react-navigation/native';
 import { TelaListagemProjetosProps } from '../../routes/app.routes';
 import { RequisitoData } from '../ListagemRequisitos';
+import { Badge, ActivityIndicator } from 'react-native-paper';
+import NoContentView from '../../components/NoContentView';
+import { RectButton } from 'react-native-gesture-handler';
 
 export interface ProjetoData {
     id: number;
@@ -17,32 +20,18 @@ export interface ProjetoData {
 
 const ListagemProjetos: React.FC<TelaListagemProjetosProps> = ({ navigation }) => {
     const [projetos, setProjetos] = useState<ProjetoData[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
 
-    useFocusEffect(
-        useCallback(() => {
-            api.get('/projeto')
-                .then(response => setProjetos(response.data))
-                .catch(error => console.log({ error }));
-
-        }, []));
+    useFocusEffect(useCallback(() => {
+        api.get('/projeto')
+            .then(response => setProjetos(response.data))
+            .catch(error => console.log({ error }))
+            .finally(() => setIsLoading(false));
+    }, [isLoading]));
 
     const addNovoProjeto = useCallback(() => {
-        api.get(`/projeto`)
-            .then(response => {
-                const projetos: ProjetoData[] = response.data;
-                console.log({ projetos })
-
-                const maiorId: number = projetos.length === 0 ? 1 :
-                    projetos
-                        .map(projeto => projeto.id)
-                        .sort((x, y) => {
-                            if (x < y) return 1;
-                            if (x > y) return -1;
-                            return 0;
-                        })[0];
-
-                navigation.navigate('CadastroProjetos', { id: maiorId + 1, manutencao: 'novo' });
-            });
+        navigation.navigate('CadastroProjetos', { manutencao: 'novo' });
+        setIsLoading(true);
     }, [navigation]);
 
     const editaProjeto = useCallback((projeto: ProjetoData) => {
@@ -51,6 +40,7 @@ const ListagemProjetos: React.FC<TelaListagemProjetosProps> = ({ navigation }) =
             ...projeto,
             manutencao: 'editar',
         });
+        setIsLoading(true);
     }, [navigation]);
 
     const listaRequisitos = useCallback((id_projeto: number) => {
@@ -59,9 +49,8 @@ const ListagemProjetos: React.FC<TelaListagemProjetosProps> = ({ navigation }) =
         });
     }, [navigation]);
 
-
-
     const deletaProjeto = useCallback(async (id: number) => {
+        setProjetos(projetos.filter(projeto => projeto.id !== id));
         api.delete(`/projeto/${id}`)
             .then(response => console.log({ response }))
             .catch(response => console.log({ response }));
@@ -73,16 +62,16 @@ const ListagemProjetos: React.FC<TelaListagemProjetosProps> = ({ navigation }) =
                 )))
             })
             .catch(response => console.log({ response }))
-        const projetosFiltrados = projetos.filter(projeto => projeto.id !== id);
-        setProjetos(projetosFiltrados);
+            .finally(() => setIsLoading(true))
+
     }, [projetos]);
 
     return (
         <>
             <KeyboardAvoidingView
-                style={{ flex: 1  }}
+                style={{ flex: 1 }}
                 behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-                enabled={false}>
+            >
                 <Header
                     texto="Listagem de projetos"
                     backgroundColor="#346FEF"
@@ -96,27 +85,55 @@ const ListagemProjetos: React.FC<TelaListagemProjetosProps> = ({ navigation }) =
                     }}
                 />
                 <Container>
-                    <SafeAreaView style={{ marginTop: 12 }}>
-                        <FlatList
-                            data={projetos}
-                            renderItem={({ item }) => (
-                                <Projeto
-                                    id={item.id}
-                                    descricao={item.descricao}
-                                    dataIni={item.data_ini}
-                                    dataFim={item.data_fim}
-                                    onLook={() => listaRequisitos(item.id)}
-                                    onEdit={() => editaProjeto(item)}
-                                    onDelete={() => deletaProjeto(item.id)}
-                                />
-                            )}
-                            keyExtractor={projeto => projeto.id.toString()}
+                    <SafeAreaView style={{ marginTop: 20, flex: 1 }}>
+                        {projetos.length > 0 ?
+                            <FlatList
+                                contentContainerStyle={{ alignSelf: 'stretch' }}
+                                data={projetos}
+                                renderItem={({ item }) => (
+                                    <Projeto
+                                        id={item.id}
+                                        descricao={item.descricao}
+                                        dataIni={item.data_ini}
+                                        dataFim={item.data_fim}
+                                        onLook={() => listaRequisitos(item.id)}
+                                        onEdit={() => editaProjeto(item)}
+                                        onDelete={() => deletaProjeto(item.id)}
+                                    />
+                                )}
+                                keyExtractor={projeto => projeto.id.toString()}
+                                refreshControl={<RefreshControl
+                                    refreshing={isLoading}
+                                    onRefresh={() => setIsLoading(true)} />}
+                                ListFooterComponent={<View />}
+                                ListFooterComponentStyle={{ height: 20 }}
+                            />
+                            :
+                            isLoading ?
 
-                            ListFooterComponent={<View />}
-                            ListFooterComponentStyle={{ height: 80 }}
-                        />
+                                <View style={{ height: '100%', alignItems: 'center', justifyContent: 'center' }}>
+                                    <ActivityIndicator style={{ marginBottom: 12 }} />
+                                    <Text>Carregando...</Text>
+                                </View>
+                                :
+                                <NoContentView
+                                    title="Ops, não há nenhum projeto cadastrado"
+                                    showFooterButton={true}
+                                    showRefreshButton={true}
+                                    footerButtonText="Novo Projeto"
+                                    refreshButtonText="Atualizar"
+                                    footerButtonOnPress={addNovoProjeto}
+                                    refreshButtonOnPress={() => setIsLoading(true)}
+                                />
+                        }
                     </SafeAreaView>
                 </Container>
+                <TotalBadge
+                    key='total'
+                    visible={projetos.length > 0}
+                >
+                    {`Total de projetos: ${projetos.length}`}
+                </TotalBadge>
             </KeyboardAvoidingView>
         </>
     )

@@ -1,7 +1,13 @@
-import styled, { css } from 'styled-components/native';
-import { View, Text } from 'react-native';
-import { RectButton } from 'react-native-gesture-handler';
+import styled from 'styled-components/native';
+import { Button } from 'react-native-paper';
 
+interface TagProps {
+    backgroundColor: string;
+}
+
+interface TagTextProps {
+    color: string;
+}
 
 export const Container = styled.View`
     align-self: center;
@@ -9,24 +15,29 @@ export const Container = styled.View`
     flex-basis: 0;
     margin-bottom: 8px;
     background: #fff;
-    border-color: #4EC5F1;
-    border-width: 1px;
-    border-radius: 8px;
+    border-radius: 24px;
     padding: 8px;
-    width: 100%;
-    ${css`
-        elevation: 8;
-    `}
+    width: 80%;
 `;
 export const IdTextContainer = styled.View`
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: flex-start;
-    padding-top: 8px;
+
+    flex-direction: column;
+    position: absolute;
+    align-self: flex-start;
+    left: 0;
+    top: 0;
+    justify-content: flex-end;
+    align-items: flex-end;
+    height: 30px;
+    border-top-left-radius: 24px;
+    border-bottom-right-radius: 8px;
+    background-color: #346FEF;
 `;
 export const IdText = styled.Text`
+    font-family: Archivo_400Regular;
     font-size: 12px;
-    color: #616161;
+    color: #fff;
+    margin: 0 16px 8px 16px;
 `;
 
 export const DescricaoTextContainer = styled.View`
@@ -34,33 +45,38 @@ export const DescricaoTextContainer = styled.View`
     justify-content: center;
     align-items: center;
     padding: 16px;
+    margin: 24px auto 24px auto;
 
 `;
 export const DescricaoText = styled.Text`
     font-size: 16px;
     color: #346FEF;
-    font-weight: bold;
+    font-family: Archivo_700Bold;
 `;
-export const DataContainer = styled.View`
+export const TagContainer = styled.View<TagProps>`
     flex-direction: column;
-    justify-content: space-between;
-    padding: 8px;
+    align-self: flex-end;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    margin: auto 8px 8px 0;    
+    border-radius: 10px;
+    background: ${props => props.backgroundColor};
+    padding: 6px;
 `;
-export const DataIniText = styled.Text`
-    font-size: 16px;
-    color: #999591;
-`;
-export const DataFimText = styled.Text`
-    font-size: 16px;
-    color: #999591;
+export const TagText = styled.Text<TagTextProps>`
+    font-size: 12px;
+    color: ${props => props.color};
 `;
 export const ButtonContainer = styled.View`
+    flex: 1;
     flex-direction: row;
-    align-items: center;
-    border-color: #d0cece;
-    border-width: 1px;
-    border-radius: 8px;
-    justify-content: space-around;
+    align-items: flex-end;
+    justify-content: flex-end;
+`;
+
+export const CustomButton = styled(Button)`
+    margin-right: 16px;
 `;
 
 export const ButtonText = styled.Text`

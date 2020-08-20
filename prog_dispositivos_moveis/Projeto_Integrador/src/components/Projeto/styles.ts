@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components/native';
 import { View, Text } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
+import { Button, Badge } from 'react-native-paper';
 
 
 export const Container = styled.View`
@@ -9,24 +10,28 @@ export const Container = styled.View`
     flex-basis: 0;
     margin-bottom: 8px;
     background: #fff;
-    border-color: #4EC5F1;
-    border-width: 1px;
-    border-radius: 8px;
+    border-radius: 24px;
     padding: 8px;
-    width: 100%;
-    ${css`
-        elevation: 8;
-    `}
+    width: 90%;
 `;
 export const IdTextContainer = styled.View`
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: flex-start;
-    padding-top: 8px;
+    flex-direction: column;
+    position: absolute;
+    align-self: flex-start;
+    left: 0;
+    top: 0;
+    justify-content: flex-end;
+    align-items: flex-end;
+    height: 30px;
+    border-top-left-radius: 24px;
+    border-bottom-right-radius: 8px;
+    background-color: #346FEF;
 `;
 export const IdText = styled.Text`
+    font-family: Archivo_400Regular;
     font-size: 12px;
-    color: #616161;
+    color: #fff;
+    margin: 0 16px 8px 16px;
 `;
 
 export const DescricaoTextContainer = styled.View`
@@ -39,32 +44,43 @@ export const DescricaoTextContainer = styled.View`
 export const DescricaoText = styled.Text`
     font-size: 16px;
     color: #346FEF;
-    font-weight: bold;
+    font-family: Archivo_700Bold;
 `;
 export const DataContainer = styled.View`
-    flex-direction: column;
+    flex-direction: row;
     justify-content: space-between;
     padding: 8px;
 `;
-export const DataIniText = styled.Text`
-    font-size: 16px;
-    color: #999591;
-`;
-export const DataFimText = styled.Text`
-    font-size: 16px;
-    color: #999591;
-`;
-export const ButtonContainer = styled.View`
+
+export const DataIniBadge = styled.View`
     flex-direction: row;
     align-items: center;
-    border-color: #d0cece;
-    border-width: 1px;
-    border-radius: 8px;
-    justify-content: space-around;
+    margin-right: 8px;
+    height: 24px;
+    border-radius: 20px;
+    background: #346FEF;
+    padding: 4px;
+`;
+
+export const BadgeText = styled.Text`
+    color: #fff;
+
+`;
+export const ButtonContainer = styled.View`
+    
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-end;
+    margin-top: -10px;
+`;
+
+export const CustomButton = styled(Button)`
+    margin-right: 16px;
 `;
 
 export const ButtonText = styled.Text`
     font-size: 12px;
     margin-left: 16px;
+    font-weight: bold;
     color: #d0cece;
 `;
