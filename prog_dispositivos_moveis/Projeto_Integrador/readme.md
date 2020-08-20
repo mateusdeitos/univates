@@ -17,7 +17,7 @@
 ## Demonstração do app
 
 <p align="center">
-  <img width="250" src="Projeto_Integrador/assets/1.jpeg"/>
+  <img width="250" src="Projeto_Integrador/.prints/Entrega%202/1.jpeg"/>
   <img width="250" src="Projeto_Integrador/ssets/2.jpeg"/>
   <img width="250" src="Projeto_Integrador/assets/3.jpeg"/>
   <img width="250" src="Projeto_Integrador/assets/4.jpeg"/>
