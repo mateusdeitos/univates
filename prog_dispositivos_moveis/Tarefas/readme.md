@@ -33,3 +33,20 @@
 <p align="center">
   <img width="250" src="tarefa_3/.prints/tarefa_4.gif"/>
 </p>
+
+# Tarefa 5
+
+## Requisitos
+ - Utilizar os sensores do dispositivo para mover o marcador do mapa
+ 
+## Ferramentas utilizadas
+ - React native
+ - Expo client
+ - Expo-Sensors
+ - React native maps
+ 
+## Demonstração do app
+
+<p align="center">
+  <img width="250" src="tarefa_5/.prints/demo.gif"/>
+</p>
