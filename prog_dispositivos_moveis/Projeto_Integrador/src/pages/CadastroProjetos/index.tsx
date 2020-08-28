@@ -1,58 +1,58 @@
-/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable import/no-useless-path-segments */
 import React, { useState, useEffect, useCallback } from 'react';
+import { KeyboardAvoidingView, Keyboard, Platform } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+import moment from 'moment';
 import Header from '../../components/Header';
 import Input from '../../components/Input';
-import Button from '../../components/Button';
 import { TelaCadastroProjetosProps } from '../../routes/app.routes';
 import { Container } from './styles';
-import { KeyboardAvoidingView, ToastAndroid, Keyboard, Platform } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
 import DatePicker from '../../components/DatePicker';
-import moment from 'moment';
 import api from '../../services/api';
 import { ProjetoData } from '../ListagemProjetos';
 
-
-
-const CadastroProjetos: React.FC<TelaCadastroProjetosProps> = ({ route, navigation }) => {
-  const { id, descricao, data_ini, data_fim, manutencao } = route.params;
+const CadastroProjetos: React.FC<TelaCadastroProjetosProps> = ({
+  route,
+  navigation,
+}) => {
+  const { id, descricao, data_ini, data_fim, onSubmit } = route.params;
   const [idProjeto, setIdProjeto] = useState(0);
   const [exibirDatePickerInicial, setExibirDatePickerInicial] = useState(false);
   const [exibirDatePickerFinal, setExibirDatePickerFinal] = useState(false);
   const [dataInicial, setDataInicial] = useState(new Date());
   const [dataConclusao, setDataConclusao] = useState(new Date());
-  const [descricaoProjeto, setDescricaoProjeto] = useState(descricao);
+  const [descricaoProjeto, setDescricaoProjeto] = useState(descricao || '');
 
   useEffect(() => {
-    if (manutencao === 'novo') {
-      api.get(`/projeto`)
-        .then(response => {
-          const projetos: ProjetoData[] = response.data;
-          const maiorId: number = projetos.length === 0 ? 0 :
-            projetos
-              .map(projeto => projeto.id)
-              .sort((x, y) => {
-                if (x < y) return 1;
-                if (x > y) return -1;
-                return 0;
-              })[0];
-          setIdProjeto(maiorId + 1);
-        });
+    if (!id) {
+      api.get(`/projeto`).then(response => {
+        const projetos: ProjetoData[] = response.data;
+        const maiorId: number =
+          projetos.length === 0
+            ? 0
+            : projetos
+                .map(projeto => projeto.id)
+                .sort((x, y) => {
+                  if (x < y) return 1;
+                  if (x > y) return -1;
+                  return 0;
+                })[0];
+        setIdProjeto(maiorId + 1);
+      });
     } else {
-      if (id) setIdProjeto(id);
-      setDescricaoProjeto(descricao);
+      setIdProjeto(id);
+      setDescricaoProjeto(descricao || '');
       setDataInicial(moment(data_ini, 'DD/MM/YYYY').toDate());
       setDataConclusao(moment(data_fim, 'DD/MM/YYYY').toDate());
     }
+  }, [data_fim, data_ini, descricao, id]);
 
-  }, []);
-
-  const mudaDataInicial = useCallback((data: any) => {
+  const mudaDataInicial = useCallback((data: Date) => {
     setExibirDatePickerInicial(false);
     setDataInicial(data);
   }, []);
 
-  const mudaDataConclusao = useCallback((data: any) => {
+  const mudaDataConclusao = useCallback((data: Date) => {
     setExibirDatePickerFinal(false);
     setDataConclusao(data);
   }, []);
@@ -63,7 +63,7 @@ const CadastroProjetos: React.FC<TelaCadastroProjetosProps> = ({ route, navigati
     setDataInicial(new Date());
     setDataConclusao(new Date());
     setDescricaoProjeto('');
-  }, [id]);
+  }, []);
 
   const exibeDatePickerInicial = useCallback(() => {
     Keyboard.dismiss();
@@ -74,40 +74,32 @@ const CadastroProjetos: React.FC<TelaCadastroProjetosProps> = ({ route, navigati
     setExibirDatePickerFinal(true);
   }, []);
 
-
   const salvaProjeto = useCallback(async () => {
+    onSubmit({
+      id: idProjeto,
+      descricao: descricaoProjeto,
+      data_ini: dataInicial,
+      data_fim: dataConclusao,
+    });
 
-
-    if (manutencao === 'editar') {
-
-      api.put(`/projeto/${idProjeto}`, {
-        descricao: descricaoProjeto,
-        data_ini: moment(dataInicial, 'DD/MM/YYYY').format('DD/MM/YYYY'),
-        data_fim: moment(dataConclusao, 'DD/MM/YYYY').format('DD/MM/YYYY'),
-      })
-        .then(response => console.log({ response }))
-        .catch(response => console.log({ response }));
-
-    } else {
-
-      api.post('/projeto', {
-        id: idProjeto,
-        descricao: descricaoProjeto,
-        data_ini: moment(dataInicial, 'DD/MM/YYYY').format('DD/MM/YYYY'),
-        data_fim: moment(dataConclusao, 'DD/MM/YYYY').format('DD/MM/YYYY'),
-      })
-        .then(response => console.log({ response }))
-        .catch(response => console.log({ response }));
-    }
     inicializaForm();
     navigation.goBack();
-  }, [inicializaForm, id, descricaoProjeto, dataInicial, dataConclusao, navigation]);
+  }, [
+    onSubmit,
+    idProjeto,
+    descricaoProjeto,
+    dataInicial,
+    dataConclusao,
+    inicializaForm,
+    navigation,
+  ]);
 
   return (
     <>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
         <Header
           texto="Cadastro de projetos"
           backgroundColor="#346FEF"
@@ -134,15 +126,15 @@ const CadastroProjetos: React.FC<TelaCadastroProjetosProps> = ({ route, navigati
             <Input
               icon="at-sign"
               label="Nome do projeto"
-              editable={true}
-              onChangeText={(data) => setDescricaoProjeto(data)}
+              editable
+              onChangeText={data => setDescricaoProjeto(data)}
               defaultValue={descricaoProjeto}
             />
             <DatePicker
               date={new Date()}
               display="calendar"
               isVisible={exibirDatePickerInicial}
-              onConfirm={(value) => mudaDataInicial(value)}
+              onConfirm={value => mudaDataInicial(value)}
               onCancel={() => setExibirDatePickerInicial(false)}
               locale="pt_BR"
               input={{
@@ -157,7 +149,7 @@ const CadastroProjetos: React.FC<TelaCadastroProjetosProps> = ({ route, navigati
               date={new Date()}
               display="calendar"
               isVisible={exibirDatePickerFinal}
-              onConfirm={(value) => mudaDataConclusao(value)}
+              onConfirm={value => mudaDataConclusao(value)}
               onCancel={() => setExibirDatePickerFinal(false)}
               locale="pt_BR"
               input={{
@@ -170,7 +162,6 @@ const CadastroProjetos: React.FC<TelaCadastroProjetosProps> = ({ route, navigati
             />
           </Container>
         </ScrollView>
-
       </KeyboardAvoidingView>
     </>
   );

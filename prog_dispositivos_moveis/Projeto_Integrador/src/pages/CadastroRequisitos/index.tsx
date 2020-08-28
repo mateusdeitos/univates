@@ -98,7 +98,6 @@ const CadastroRequisitos: React.FC<TelaCadastroRequisitosProps> = ({ route, navi
 
       const data = moment(dataRegistro, 'DD/MM/YYYY').format('DD/MM/YYYY');
 
-      console.log(descricaoRequisito);
       api.put(`/requisito/${idRequisito}`, {
         descricao: descricaoRequisito,
         id_projeto: projetoSelecionado,
