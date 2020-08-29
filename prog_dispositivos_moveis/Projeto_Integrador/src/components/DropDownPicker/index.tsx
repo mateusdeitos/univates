@@ -1,11 +1,9 @@
-/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import { lighten } from 'polished';
 import DropDownPicker from 'react-native-dropdown-picker';
-import DropDownPickerProps from 'react-native-dropdown-picker';
 import { Label } from './styles';
 
-interface PickerProps extends DropDownPickerProps {
+interface PickerProps extends DropDownPicker {
   label?: string;
   searchablePlaceholder?: string;
 }

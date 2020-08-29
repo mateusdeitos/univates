@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, ViewProps } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { FlatList } from 'react-native-gesture-handler';
 import {
   Container,
   IdTextContainer,

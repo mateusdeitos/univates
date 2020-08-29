@@ -1,7 +1,6 @@
 import React from 'react';
 import { Text } from 'react-native';
-import Slider, { SliderProps } from '@react-native-community/slider';
-import { shade } from 'polished';
+import Slider from '@react-native-community/slider';
 import { Container, Label } from './styles';
 
 interface InputProps {
