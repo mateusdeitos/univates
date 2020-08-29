@@ -1,7 +1,6 @@
 import styled from 'styled-components/native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { RectButton, FlatList } from 'react-native-gesture-handler';
-import { Badge } from 'react-native-paper';
 
 interface ButtonProps {
   backgroundColor?: string;
@@ -96,11 +95,18 @@ export const BadgeList = styled(FlatList as new () => FlatList<string>)`
   margin-bottom: 16px;
 `;
 
-export const ListBadge = styled(Badge)`
-  font-family: Poppins_600SemiBold;
-  font-size: 12px;
+export const ListBadge = styled.View`
+  flex-direction: row;
+  align-items: center;
   padding: 0 12px;
+  border-radius: 12px;
   margin-right: 4px;
   align-content: center;
   background: #346fef;
+`;
+
+export const BadgeText = styled.Text`
+  font-family: Poppins_600SemiBold;
+  font-size: 12px;
+  color: #fff;
 `;

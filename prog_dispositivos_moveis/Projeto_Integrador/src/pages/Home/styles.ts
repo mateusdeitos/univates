@@ -3,7 +3,7 @@ import { RectButton } from 'react-native-gesture-handler';
 
 export const Container = styled.View`
   flex: 1;
-  background-color: #346FEF;
+  background-color: #346fef;
   align-items: center;
   margin-top: -40px;
 `;
@@ -40,7 +40,6 @@ export const LandingImage = styled.Image`
   flex: 1;
   width: 100%;
   ${css`
-    resize-mode: contain
+    resize-mode: contain;
   `}
 `;
-

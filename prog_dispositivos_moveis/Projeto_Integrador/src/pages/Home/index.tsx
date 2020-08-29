@@ -1,9 +1,15 @@
 import React from 'react';
-import { View, Text, KeyboardAvoidingView, SafeAreaView, Platform } from 'react-native';
-import landingImage from '../../../assets/landing.png'
-import { RectButton } from 'react-native-gesture-handler';
+import { KeyboardAvoidingView, SafeAreaView, Platform } from 'react-native';
+import landingImage from '../../../assets/landing.png';
 import Header from '../../components/Header';
-import { Container, LandingImage, WelcomeText, ButtonText, RouteButton, ContentContainer } from './styles';
+import {
+  Container,
+  LandingImage,
+  WelcomeText,
+  ButtonText,
+  RouteButton,
+  ContentContainer,
+} from './styles';
 import { TelaHomeProps } from '../../routes/app.routes';
 
 const Home: React.FC<TelaHomeProps> = ({ navigation }) => {
@@ -24,9 +30,11 @@ const Home: React.FC<TelaHomeProps> = ({ navigation }) => {
         <SafeAreaView style={{ marginTop: 20, flex: 1 }}>
           <Container>
             <LandingImage source={landingImage} />
-            <ContentContainer >
-              <WelcomeText >Seja bem-vindo!</WelcomeText>
-              <RouteButton onPress={() => navigation.navigate('ListagemProjetos')}>
+            <ContentContainer>
+              <WelcomeText>Seja bem-vindo!</WelcomeText>
+              <RouteButton
+                onPress={() => navigation.navigate('ListagemProjetos')}
+              >
                 <ButtonText>Ir para Projetos...</ButtonText>
               </RouteButton>
             </ContentContainer>

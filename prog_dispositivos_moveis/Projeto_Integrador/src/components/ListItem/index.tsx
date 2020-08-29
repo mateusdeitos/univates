@@ -14,6 +14,7 @@ import {
   ItemIcon,
   ListBadge,
   BadgeList,
+  BadgeText,
 } from './styles';
 
 interface Props extends ViewProps {
@@ -73,8 +74,8 @@ const ListItem: React.FC<Props> = ({
           horizontal
           data={badges}
           renderItem={({ item }) => (
-            <ListBadge key={item} visible>
-              {item}
+            <ListBadge key={item}>
+              <BadgeText>{item}</BadgeText>
             </ListBadge>
           )}
           keyExtractor={item => item}

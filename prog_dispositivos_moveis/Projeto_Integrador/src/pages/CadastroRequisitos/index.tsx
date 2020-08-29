@@ -1,20 +1,34 @@
-/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable no-console */
 import React, { useState, useEffect, useCallback } from 'react';
-import { KeyboardAvoidingView, Alert, Text, Platform } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import {
+  KeyboardAvoidingView,
+  Text,
+  Platform,
+  Alert,
+  Image,
+  View,
+} from 'react-native';
+import * as Location from 'expo-location';
+import * as Permissions from 'expo-permissions';
+import {
+  launchCameraAsync,
+  launchImageLibraryAsync,
+  MediaTypeOptions,
+} from 'expo-image-picker';
+import { ScrollView, FlatList } from 'react-native-gesture-handler';
 import moment from 'moment';
-import Slider from '@react-native-community/slider';
 import Header from '../../components/Header';
 import Input from '../../components/Input';
 import { Container } from './styles';
 import RadioButton, { OptionsProps } from '../../components/RadioButton';
 import { TelaCadastroRequisitosProps } from '../../routes/app.routes';
 import api from '../../services/api';
-import { ProjetoData } from '../ListagemProjetos';
 import { RequisitoData } from '../ListagemRequisitos';
-import { ProjetoOptions } from '../../dtos/ProjetoDTO';
 import { options } from '../../defaults/options';
 import SliderInput from '../../components/SliderInput';
+import Button from '../../components/Button';
+import img from '../../../assets/landing.png';
+import ImageGrid from '../../components/ImageGrid';
 
 const CadastroRequisitos: React.FC<TelaCadastroRequisitosProps> = ({
   route,
@@ -29,6 +43,8 @@ const CadastroRequisitos: React.FC<TelaCadastroRequisitosProps> = ({
     nivel_importancia,
     tempo,
     tipo_requisito,
+    coordenadas,
+    fotos_uri,
     onSubmit,
   } = route.params;
 
@@ -43,8 +59,8 @@ const CadastroRequisitos: React.FC<TelaCadastroRequisitosProps> = ({
     OptionsProps[]
   >([]);
   const [idRequisito, setIdRequisito] = useState(0);
-  const [projetoSelecionado, setProjetoSelecionado] = useState(id_projeto);
-  const [dataRegistro, setDataRegistro] = useState(() =>
+  const [projetoSelecionado] = useState(id_projeto);
+  const [dataRegistro] = useState(() =>
     moment(new Date(), 'DD/MM/YYYY').toDate(),
   );
   const [nivelDificuldade, setNivelDificuldade] = useState(0);
@@ -52,6 +68,8 @@ const CadastroRequisitos: React.FC<TelaCadastroRequisitosProps> = ({
   const [horasHomem, setHorasHomem] = useState(0);
   const [descricaoRequisito, setDescricaoRequisito] = useState('');
   const [tipoRequisito, setTipoRequisito] = useState(0);
+  const [coordenadaAtual, setCoordenadaAtual] = useState('Carregando...');
+  const [fotos, setFotos] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -67,6 +85,27 @@ const CadastroRequisitos: React.FC<TelaCadastroRequisitosProps> = ({
     setDescricaoRequisito('');
     setHorasHomem(0);
   }, []);
+
+  useEffect(() => {
+    async function loadPosition() {
+      const { status } = await Permissions.askAsync(Permissions.LOCATION);
+
+      if (status !== 'granted') {
+        Alert.alert(
+          'Ooooops... ',
+          'Precisamos de us apermissão para obter a localização',
+        );
+        return;
+      }
+
+      const location = await Location.getCurrentPositionAsync();
+
+      const { latitude, longitude } = location.coords;
+
+      setCoordenadaAtual(`${latitude},${longitude}`);
+    }
+    if (!id) loadPosition();
+  }, [id]);
 
   useEffect(() => {
     if (!id) {
@@ -93,15 +132,17 @@ const CadastroRequisitos: React.FC<TelaCadastroRequisitosProps> = ({
       if (descricao) setDescricaoRequisito(descricao);
       if (nivel_dificuldade) setNivelDificuldade(nivel_dificuldade);
       if (nivel_importancia) setNivelImportancia(nivel_importancia);
-      // if (data_registro)
-      //   setDataRegistro(moment(data_registro, 'DD/MM/YYYY').toDate());
+      if (coordenadas) setCoordenadaAtual(coordenadas);
+      if (fotos_uri) setFotos(fotos_uri);
       if (tempo) setHorasHomem(tempo);
       if (tipo_requisito) setTipoRequisito(tipo_requisito);
       setIsLoading(false);
     }
   }, [
+    coordenadas,
     data_registro,
     descricao,
+    fotos_uri,
     id,
     nivel_dificuldade,
     nivel_importancia,
@@ -118,6 +159,8 @@ const CadastroRequisitos: React.FC<TelaCadastroRequisitosProps> = ({
       nivel_importancia: nivelImportancia,
       tempo: horasHomem,
       tipo_requisito: tipoRequisito,
+      coordenadas: coordenadaAtual,
+      fotos_uri: fotos,
     });
 
     inicializaForm();
@@ -132,9 +175,61 @@ const CadastroRequisitos: React.FC<TelaCadastroRequisitosProps> = ({
     nivelImportancia,
     horasHomem,
     tipoRequisito,
+    coordenadaAtual,
+    fotos,
     inicializaForm,
     navigation,
   ]);
+
+  const handleAddFotoCamera = useCallback(async () => {
+    const cameraPermission = await Permissions.askAsync(Permissions.CAMERA);
+
+    if (cameraPermission.status !== 'granted') {
+      Alert.alert(
+        'Ooooops... ',
+        'Precisamos de us apermissão para acessar a câmera',
+      );
+      return;
+    }
+    try {
+      const result = await launchCameraAsync({
+        mediaTypes: MediaTypeOptions.Images,
+      });
+      if (!result.cancelled) {
+        setFotos([...fotos, result.uri]);
+      }
+    } catch (error) {
+      console.log({ error });
+    }
+  }, [fotos]);
+
+  const handleAddFotoGaleria = useCallback(async () => {
+    const galeriaPermission = await Permissions.askAsync(
+      Permissions.CAMERA_ROLL,
+    );
+
+    if (galeriaPermission.status !== 'granted') {
+      Alert.alert(
+        'Ooooops... ',
+        'Precisamos de us apermissão para acessar a galeria',
+      );
+      return;
+    }
+    try {
+      const result = await launchImageLibraryAsync({
+        mediaTypes: MediaTypeOptions.Images,
+      });
+      if (!result.cancelled) {
+        setFotos([...fotos, result.uri]);
+      }
+    } catch (error) {
+      console.log({ error });
+    }
+  }, [fotos]);
+
+  const handleApagaTodasFotos = useCallback(() => {
+    setFotos([]);
+  }, []);
 
   return (
     <>
@@ -183,6 +278,13 @@ const CadastroRequisitos: React.FC<TelaCadastroRequisitosProps> = ({
                 accessible={false}
                 value={moment(dataRegistro).format('DD/MM/YYYY')}
               />
+              <Input
+                icon="map-pin"
+                label="Coordenadas"
+                editable={false}
+                accessible={false}
+                value={coordenadaAtual}
+              />
               <RadioButton
                 label="Tipo do requisito"
                 options={listaTiposRequisitos}
@@ -220,6 +322,28 @@ const CadastroRequisitos: React.FC<TelaCadastroRequisitosProps> = ({
                 defaultValue={descricaoRequisito}
                 onChangeText={value => setDescricaoRequisito(value)}
               />
+              <Button
+                icon="image"
+                text="Galeria"
+                onPress={handleAddFotoGaleria}
+              />
+              <Button
+                icon="camera"
+                text="Câmera"
+                onPress={handleAddFotoCamera}
+              />
+
+              {fotos.length > 0 && (
+                <>
+                  <ImageGrid images={fotos} />
+                  <Button
+                    icon="trash"
+                    text="Apagar Todas"
+                    onPress={handleApagaTodasFotos}
+                    backgroundColor="#ff6060"
+                  />
+                </>
+              )}
             </Container>
           )}
         </ScrollView>

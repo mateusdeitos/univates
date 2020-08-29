@@ -23,6 +23,7 @@
     "expo": "~38.0.8",
     "expo-file-system": "~9.0.1",
     "expo-font": "~8.2.1",
+    "expo-image-picker": "~8.3.0",
     "expo-notifications": "~0.3.3",
     "expo-push-notification-helper": "^0.4.0",
     "expo-sqlite": "~8.2.1",

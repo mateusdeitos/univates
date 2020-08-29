@@ -11,7 +11,6 @@ import {
   RefreshControl,
   Platform,
 } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
 import { ActivityIndicator } from 'react-native-paper';
 import moment from 'moment';
 import api from '../../services/api';
@@ -31,6 +30,8 @@ export interface RequisitoData {
   nivel_dificuldade: number;
   tempo: number;
   tipo_requisito: number;
+  coordenadas: string;
+  fotos_uri: string[];
 }
 
 const ListagemRequisitos: React.FC<TelaListagemRequisitosProps> = ({

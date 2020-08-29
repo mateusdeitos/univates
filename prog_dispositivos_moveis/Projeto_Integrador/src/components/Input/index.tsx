@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { TextInputProperties, Text } from 'react-native';
 import { shade } from 'polished';
 import { Container, TextInput, InputIcon, Label } from './styles';

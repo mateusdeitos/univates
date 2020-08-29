@@ -1,15 +1,26 @@
 import React from 'react';
-import {Container, ButtonText} from './styles';
-import {RectButtonProperties} from 'react-native-gesture-handler';
+import { RectButtonProperties } from 'react-native-gesture-handler';
+import { shade } from 'polished';
+import { Container, ButtonText, InputIcon } from './styles';
 
 interface ButtonProps extends RectButtonProperties {
-  children: string;
+  text: string;
+  backgroundColor?: string;
+  icon?: string;
 }
 
-const Button: React.FC<ButtonProps> = ({children, ...rest}) => {
+const Button: React.FC<ButtonProps> = ({
+  text,
+  backgroundColor = '#346fef',
+  icon,
+  ...rest
+}) => {
   return (
-    <Container {...rest}>
-      <ButtonText>{children} </ButtonText>
+    <Container backgroundColor={backgroundColor} {...rest}>
+      {icon && (
+        <InputIcon name={icon} size={25} color={shade(0.4, backgroundColor)} />
+      )}
+      <ButtonText>{text}</ButtonText>
     </Container>
   );
 };

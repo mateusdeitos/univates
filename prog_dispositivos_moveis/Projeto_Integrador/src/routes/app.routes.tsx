@@ -31,6 +31,8 @@ export interface CadastroRequisitosProps {
   nivel_dificuldade?: number;
   tempo?: number;
   tipo_requisito?: number;
+  coordenadas?: string;
+  fotos_uri?: string[];
   onSubmit(requisito: RequisitoData): void;
 }
 
