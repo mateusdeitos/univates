@@ -41,10 +41,8 @@ const ListItem: React.FC<Props> = ({
   onDelete,
   buttonEditBackgroundColor = '#22b800',
   buttonEditTextColor = '#1a4012',
-  buttonEditBorderColor = '#1a4012',
   buttonDeleteBackgroundColor = '#f20202',
   buttonDeleteTextColor = '#4d0000',
-  buttonDeleteBorderColor = '#4d0000',
   ...rest
 }) => {
   return (
@@ -70,7 +68,9 @@ const ListItem: React.FC<Props> = ({
         </DescricaoTextContainer>
 
         <BadgeList
-          contentContainerStyle={{ alignSelf: 'stretch' }}
+          contentContainerStyle={{
+            alignSelf: 'stretch',
+          }}
           horizontal
           data={badges}
           renderItem={({ item }) => (
@@ -88,15 +88,13 @@ const ListItem: React.FC<Props> = ({
             <CustomButton
               onPress={onEdit}
               backgroundColor={buttonEditBackgroundColor}
-              borderColor={buttonEditBorderColor}
             >
-              <FontAwesome5 name="edit" size={30} color="#1a4012" />
+              <FontAwesome5 name="pen" size={30} color="#1a4012" />
               <ButtonText textColor={buttonEditTextColor}>Editar</ButtonText>
             </CustomButton>
             <CustomButton
               onPress={onDelete}
               backgroundColor={buttonDeleteBackgroundColor}
-              borderColor={buttonDeleteBorderColor}
             >
               <FontAwesome5 name="trash" size={30} color="#ff6060" />
               <ButtonText textColor={buttonDeleteTextColor}>Apagar</ButtonText>

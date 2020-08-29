@@ -5,7 +5,6 @@ import { Badge } from 'react-native-paper';
 
 interface ButtonProps {
   backgroundColor?: string;
-  borderColor?: string;
 }
 interface ButtonTextProps {
   textColor?: string;
@@ -81,8 +80,6 @@ export const CustomButton = styled(RectButton)<ButtonProps>`
   border-radius: 12px;
   margin-right: 8px;
   height: 64px;
-  border-width: 1px;
-  border-color: ${props => (props.borderColor ? props.borderColor : '#fff')};
   background-color: ${props =>
     props.backgroundColor ? props.backgroundColor : '#fff'};
 `;
@@ -95,6 +92,7 @@ export const ButtonText = styled.Text<ButtonTextProps>`
 `;
 
 export const BadgeList = styled(FlatList as new () => FlatList<string>)`
+  height: 24px;
   margin-bottom: 16px;
 `;
 
@@ -102,5 +100,7 @@ export const ListBadge = styled(Badge)`
   font-family: Poppins_600SemiBold;
   font-size: 12px;
   padding: 0 12px;
+  margin-right: 4px;
+  align-content: center;
   background: #346fef;
 `;

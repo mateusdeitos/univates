@@ -51,7 +51,6 @@ const ListagemProjetos: React.FC<TelaListagemProjetosProps> = ({
           data_ini: moment(data_ini, 'DD/MM/YYYY').format('DD/MM/YYYY'),
           data_fim: moment(data_fim, 'DD/MM/YYYY').format('DD/MM/YYYY'),
         });
-        console.log({ projetos });
         setProjetos([...projetos, response.data]);
       } catch (error) {
         console.log({ error });
@@ -151,7 +150,7 @@ const ListagemProjetos: React.FC<TelaListagemProjetosProps> = ({
           }}
         />
         <Container>
-          <SafeAreaView style={{ marginTop: 20, flex: 1 }}>
+          <SafeAreaView style={{ marginTop: -10, flex: 1 }}>
             {projetos.length > 0 ? (
               <FlatList
                 contentContainerStyle={{ alignSelf: 'stretch' }}

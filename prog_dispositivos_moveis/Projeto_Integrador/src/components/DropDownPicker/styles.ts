@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import {lighten} from 'polished';
+import { lighten } from 'polished';
 
 export const Container = styled.View`
   width: 100%;

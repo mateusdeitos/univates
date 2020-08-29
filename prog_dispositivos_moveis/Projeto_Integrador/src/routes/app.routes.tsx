@@ -8,6 +8,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import ProjetoStack from './projeto.routes';
 import Home from '../pages/Home';
 import { ProjetoData } from '../pages/ListagemProjetos';
+import { RequisitoData } from '../pages/ListagemRequisitos';
 
 export interface CadastroProjetoProps {
   id?: number;
@@ -30,7 +31,7 @@ export interface CadastroRequisitosProps {
   nivel_dificuldade?: number;
   tempo?: number;
   tipo_requisito?: number;
-  manutencao: 'novo' | 'editar';
+  onSubmit(requisito: RequisitoData): void;
 }
 
 type HomePropsType = RouteProp<RootParamList, 'Home'>;

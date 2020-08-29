@@ -1,130 +1,197 @@
-import React, { useState, useCallback } from 'react';
-import { View, Text, KeyboardAvoidingView, SafeAreaView, FlatList, RefreshControl, Platform } from 'react-native';
+/* eslint-disable react/jsx-wrap-multilines */
+/* eslint-disable no-console */
+/* eslint-disable no-nested-ternary */
+import React, { useState, useCallback, useEffect } from 'react';
+import {
+  View,
+  Text,
+  KeyboardAvoidingView,
+  SafeAreaView,
+  FlatList,
+  RefreshControl,
+  Platform,
+} from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
+import { ActivityIndicator } from 'react-native-paper';
+import moment from 'moment';
 import api from '../../services/api';
 import Header from '../../components/Header';
 import { Container } from './styles';
-import { useFocusEffect } from '@react-navigation/native';
 import { TelaListagemRequisitosProps } from '../../routes/app.routes';
-import Requisito from '../../components/Requisito';
-import { ActivityIndicator } from 'react-native-paper';
 import NoContentView from '../../components/NoContentView';
+import ListItem from '../../components/ListItem';
+import { options } from '../../defaults/options';
 
 export interface RequisitoData {
-    id: number;
-    id_projeto: number;
-    descricao: string;
-    data_registro: Date;
-    nivel_importancia: 1 | 2 | 3;
-    nivel_dificuldade: 1 | 2 | 3;
-    tempo: number;
-    tipo_requisito: 1 | 2;
+  id: number;
+  id_projeto: number;
+  descricao: string;
+  data_registro: Date;
+  nivel_importancia: number;
+  nivel_dificuldade: number;
+  tempo: number;
+  tipo_requisito: number;
 }
 
-const ListagemRequisitos: React.FC<TelaListagemRequisitosProps> = ({ route, navigation }) => {
-    const { id_projeto } = route.params;
-    const [requisitos, setRequisitos] = useState<RequisitoData[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
+const ListagemRequisitos: React.FC<TelaListagemRequisitosProps> = ({
+  route,
+  navigation,
+}) => {
+  const { id_projeto } = route.params;
+  const [requisitos, setRequisitos] = useState<RequisitoData[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-    useFocusEffect(
-        useCallback(() => {
-            api.get(`/requisito?id_projeto=${id_projeto}`)
-                .then(response => setRequisitos(response.data))
-                .catch(error => console.log({ error }))
-                .finally(() => setIsLoading(false));
+  useEffect(() => {
+    api
+      .get(`/requisito?id_projeto=${id_projeto}`)
+      .then(response => setRequisitos(response.data))
+      .catch(error => console.log({ error }))
+      .finally(() => setIsLoading(false));
+  }, [id_projeto, isLoading]);
 
-        }, [isLoading]));
-
-    const addNovoRequisito = useCallback(() => {
-        navigation.navigate('CadastroRequisitos', {
-            manutencao: 'novo',
-            id_projeto,
+  const addNovoRequisito = useCallback(
+    async (requisito: RequisitoData) => {
+      try {
+        const response = await api.post(`/requisito`, {
+          ...requisito,
+          id_projeto,
         });
-        setIsLoading(true);
-    }, [navigation]);
+        setRequisitos([...requisitos, response.data]);
+      } catch (error) {
+        console.log({ error });
+      }
+    },
+    [id_projeto, requisitos],
+  );
 
-    const editaRequisito = useCallback((requisito: RequisitoData) => {
-        navigation.navigate('CadastroRequisitos', {
-            ...requisito,
-            // data_registro: moment(requisito.data_registro,'DD/MM/YYYY').toDate(),
-            manutencao: 'editar',
+  const editaRequisito = useCallback(
+    async (requisito: RequisitoData) => {
+      try {
+        const { id } = requisito;
+        const response = await api.put(`/requisito/${id}`, {
+          ...requisito,
+          id_projeto,
         });
-        setIsLoading(true);
-    }, [navigation]);
+        const novosRequisitos = requisitos.map(req =>
+          req.id === id ? { ...response.data } : req,
+        );
+        setRequisitos(novosRequisitos);
+      } catch (error) {
+        console.log({ error });
+      }
+    },
+    [id_projeto, requisitos],
+  );
 
-    const deletaRequisito = useCallback(async (id: number) => {
-        setRequisitos(requisitos.filter(req => req.id !== id));
-        api.delete(`/requisito/${id}`)
-            .then(response => console.log({ response }))
-            .catch(response => console.log({ response }));
-        setIsLoading(true);
-    }, [requisitos])
+  const deletaRequisito = useCallback(
+    async (id: number) => {
+      setRequisitos(requisitos.filter(req => req.id !== id));
+      api
+        .delete(`/requisito/${id}`)
+        .then(response => console.log({ response }))
+        .catch(response => console.log({ response }));
+    },
+    [requisitos],
+  );
 
-    return (
-        <>
-            <KeyboardAvoidingView
-                style={{ flex: 1 }}
-                behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-            >
-                <Header
-                    texto="Requisitos cadastrados"
-                    backgroundColor="#346FEF"
-                    iconLeft={{
-                        iconName: 'arrow-left',
-                        onPress: () => navigation.goBack(),
-                    }}
-                    iconRight={{
-                        iconName: 'plus',
-                        onPress: addNovoRequisito,
-                    }}
-                />
-                <Container>
-                    <SafeAreaView style={{ marginTop: 20, flex: 1 }}>
-                        {requisitos.length > 0 ?
-                            <FlatList
-                                data={requisitos}
-                                renderItem={({ item }) => (
-                                    <Requisito
-                                        id={item.id}
-                                        descricao={item.descricao}
-                                        dataRegistro={item.data_registro}
-                                        nivelDificuldade={item.nivel_dificuldade}
-                                        nivelImportancia={item.nivel_importancia}
-                                        tempo={item.tempo}
-                                        tipoRequisito={item.tipo_requisito}
-                                        onEdit={() => editaRequisito(item)}
-                                        onDelete={() => deletaRequisito(item.id)}
-                                    />
-                                )}
-                                keyExtractor={requisito => requisito.id.toString()}
-                                refreshControl={<RefreshControl
-                                    refreshing={isLoading}
-                                    onRefresh={() => setIsLoading(true)} />}
+  const handleNovoRequisito = useCallback(() => {
+    navigation.navigate('CadastroRequisitos', {
+      onSubmit: addNovoRequisito,
+      id_projeto,
+    });
+  }, [addNovoRequisito, id_projeto, navigation]);
 
-                                ListFooterComponent={<View />}
-                                ListFooterComponentStyle={{ height: 80 }}
-                            />
-                            :
-                            isLoading ?
+  const handleEditRequisito = useCallback(
+    (requisito: RequisitoData) => {
+      navigation.navigate('CadastroRequisitos', {
+        ...requisito,
+        onSubmit: editaRequisito,
+        id_projeto,
+      });
+    },
+    [editaRequisito, id_projeto, navigation],
+  );
 
-                                <View style={{ height: '100%', alignItems: 'center', justifyContent: 'center' }}>
-                                    <ActivityIndicator style={{ marginBottom: 12 }} />
-                                    <Text>Carregando...</Text>
-                                </View>
-                                :
-                                <NoContentView
-                                    title="Ops, não há nenhum requisito cadastrado"
-                                    showFooterButton={true}
-                                    showRefreshButton={false}
-                                    footerButtonText="Novo Requisito"
-                                    footerButtonOnPress={addNovoRequisito}
-                                />
-                        }
-
-                    </SafeAreaView>
-                </Container>
-            </KeyboardAvoidingView>
-        </>
-    )
-}
+  return (
+    <>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      >
+        <Header
+          texto="Requisitos cadastrados"
+          backgroundColor="#346FEF"
+          iconLeft={{
+            iconName: 'arrow-left',
+            onPress: () => navigation.goBack(),
+          }}
+          iconRight={{
+            iconName: 'plus',
+            onPress: handleNovoRequisito,
+          }}
+        />
+        <Container>
+          <SafeAreaView style={{ marginTop: 20, flex: 1 }}>
+            {requisitos.length > 0 ? (
+              <FlatList
+                data={requisitos}
+                renderItem={({ item }) => (
+                  <ListItem
+                    id={item.id}
+                    descricao={item.descricao}
+                    onLook={() => handleEditRequisito(item)}
+                    onEdit={() => handleEditRequisito(item)}
+                    onDelete={() => deletaRequisito(item.id)}
+                    badges={[
+                      `Registro: ${moment(item.data_registro).format(
+                        'DD/MM/YYYY',
+                      )}`,
+                      `Tempo estimado: ${item.tempo} Hora Homem`,
+                      `${options.tiposRequisitos[item.tipo_requisito].label}`,
+                      `Dificuldade: ${
+                        options.niveisDificuldade[item.nivel_dificuldade].label
+                      }`,
+                      `Importância: ${
+                        options.niveisImportancia[item.nivel_importancia].label
+                      }`,
+                    ]}
+                  />
+                )}
+                keyExtractor={requisito => requisito.id.toString()}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={isLoading}
+                    onRefresh={() => setIsLoading(true)}
+                  />
+                }
+                ListFooterComponent={<View />}
+                ListFooterComponentStyle={{ height: 80 }}
+              />
+            ) : isLoading ? (
+              <View
+                style={{
+                  height: '100%',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <ActivityIndicator style={{ marginBottom: 12 }} />
+                <Text>Carregando...</Text>
+              </View>
+            ) : (
+              <NoContentView
+                title="Ops, não há nenhum requisito cadastrado"
+                showFooterButton
+                showRefreshButton={false}
+                footerButtonText="Novo Requisito"
+                footerButtonOnPress={handleNovoRequisito}
+              />
+            )}
+          </SafeAreaView>
+        </Container>
+      </KeyboardAvoidingView>
+    </>
+  );
+};
 
 export default ListagemRequisitos;

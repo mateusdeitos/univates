@@ -1,9 +1,9 @@
 import React from 'react';
-import Input from '../Input';
-import {TextInputProperties, Keyboard} from 'react-native';
+import { TextInputProperties, Keyboard } from 'react-native';
 import DateTimePickerModal, {
   DateTimePickerProps,
 } from 'react-native-modal-datetime-picker';
+import Input from '../Input';
 
 interface InputProps extends TextInputProperties {
   icon?: string;
