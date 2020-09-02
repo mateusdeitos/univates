@@ -18,8 +18,8 @@
   <img width="250" src=".prints/entrega-3/1.jpeg"/>
   <img width="250" src=".prints/entrega-3/2.jpeg"/>
   <img width="250" src=".prints/entrega-3/3.jpeg"/>
-  <img width="250" src=".prints/entrega-3/4.jpeg"/>
   <img width="250" src=".prints/entrega-3/5.jpeg"/>
+  <img width="250" src=".prints/entrega-3/4.jpeg"/>
   <img width="250" src=".prints/entrega-3/demo.gif"/>
 </p>
 
