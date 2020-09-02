@@ -1,8 +1,11 @@
 import styled from 'styled-components/native';
-import { FontAwesome5 } from '@expo/vector-icons';
 import { RectButton, FlatList } from 'react-native-gesture-handler';
+import { BadgeProps } from '.';
 
 interface ButtonProps {
+  backgroundColor?: string;
+}
+interface ListBadgeProps {
   backgroundColor?: string;
 }
 interface ButtonTextProps {
@@ -48,14 +51,11 @@ export const DescricaoTextContainer = styled.View`
 `;
 
 export const DescricaoText = styled.Text`
-  /* flex: 1; */
+  flex: 1;
+  text-align: center;
   font-size: 24px;
   color: #346fef;
   font-family: Archivo_700Bold;
-`;
-
-export const ItemIcon = styled(FontAwesome5)`
-  margin-left: auto;
 `;
 
 export const FooterContainer = styled.View`
@@ -90,19 +90,20 @@ export const ButtonText = styled.Text<ButtonTextProps>`
   color: ${props => (props.textColor ? props.textColor : '#d0cece')};
 `;
 
-export const BadgeList = styled(FlatList as new () => FlatList<string>)`
-  height: 24px;
+export const BadgeList = styled(FlatList as new () => FlatList<BadgeProps>)`
+  height: 36px;
   margin-bottom: 16px;
 `;
 
-export const ListBadge = styled.View`
+export const ListBadge = styled.View<ListBadgeProps>`
   flex-direction: row;
   align-items: center;
   padding: 0 12px;
   border-radius: 12px;
   margin-right: 4px;
   align-content: center;
-  background: #346fef;
+  background: ${props =>
+    props.backgroundColor ? props.backgroundColor : '#346fef'};
 `;
 
 export const BadgeText = styled.Text`

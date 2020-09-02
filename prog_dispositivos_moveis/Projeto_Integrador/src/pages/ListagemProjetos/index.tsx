@@ -13,7 +13,6 @@ import {
 import { ActivityIndicator } from 'react-native-paper';
 import moment from 'moment';
 import api from '../../services/api';
-import Projeto from '../../components/Projeto';
 import Header from '../../components/Header';
 import { Container, TotalBadge } from './styles';
 import { TelaListagemProjetosProps } from '../../routes/app.routes';
@@ -160,8 +159,12 @@ const ListagemProjetos: React.FC<TelaListagemProjetosProps> = ({
                     id={item.id}
                     descricao={item.descricao}
                     badges={[
-                      `Data inicial: ${item.data_ini}`,
-                      `Data final: ${item.data_fim}`,
+                      {
+                        text: `Data inicial: ${item.data_ini}`,
+                      },
+                      {
+                        text: `Data final: ${item.data_fim}`,
+                      },
                     ]}
                     onLook={() => listaRequisitos(item.id)}
                     onEdit={() => handleEditaProjeto(item)}

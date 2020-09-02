@@ -140,21 +140,46 @@ const ListagemRequisitos: React.FC<TelaListagemRequisitosProps> = ({
                   <ListItem
                     id={item.id}
                     descricao={item.descricao}
-                    onLook={() => handleEditRequisito(item)}
                     onEdit={() => handleEditRequisito(item)}
                     onDelete={() => deletaRequisito(item.id)}
                     badges={[
-                      `Registro: ${moment(item.data_registro).format(
-                        'DD/MM/YYYY',
-                      )}`,
-                      `Tempo estimado: ${item.tempo} Hora Homem`,
-                      `${options.tiposRequisitos[item.tipo_requisito].label}`,
-                      `Dificuldade: ${
-                        options.niveisDificuldade[item.nivel_dificuldade].label
-                      }`,
-                      `Importância: ${
-                        options.niveisImportancia[item.nivel_importancia].label
-                      }`,
+                      {
+                        text: `Registro: ${moment(item.data_registro).format(
+                          'DD/MM/YYYY',
+                        )}`,
+                      },
+                      {
+                        text: `Tempo estimado: ${item.tempo} Hora Homem`,
+                      },
+                      {
+                        text: `${
+                          options.tiposRequisitos[item.tipo_requisito].label
+                        }`,
+                        backgroundColor: `${
+                          options.tiposRequisitos[item.tipo_requisito]
+                            .activeColor
+                        }`,
+                      },
+                      {
+                        text: `Dificuldade: ${
+                          options.niveisDificuldade[item.nivel_dificuldade]
+                            .label
+                        }`,
+                        backgroundColor: `${
+                          options.niveisDificuldade[item.nivel_dificuldade]
+                            .activeColor
+                        }`,
+                      },
+                      {
+                        text: `Importância: ${
+                          options.niveisImportancia[item.nivel_importancia]
+                            .label
+                        }`,
+                        backgroundColor: `${
+                          options.niveisImportancia[item.nivel_importancia]
+                            .activeColor
+                        }`,
+                      },
                     ]}
                   />
                 )}

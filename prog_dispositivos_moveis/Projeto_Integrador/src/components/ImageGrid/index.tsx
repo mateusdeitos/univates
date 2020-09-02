@@ -1,22 +1,30 @@
 import React from 'react';
-import { View } from 'react-native';
-import { Label, Container, ImageItem } from './styles';
+import {
+  Label,
+  Container,
+  ImageItem,
+  ImageContainer,
+  ImageAction,
+  ImageActionIcon,
+} from './styles';
 
 interface ImageGridProps {
   images: string[];
+  onDelete(image: string): void;
 }
 
-const ImageGrid: React.FC<ImageGridProps> = ({ images }) => {
+const ImageGrid: React.FC<ImageGridProps> = ({ images, onDelete }) => {
   return (
     <>
       <Label>Fotos</Label>
       <Container>
         {images.map(uri => (
-          <ImageItem
-            key={uri}
-            source={{ uri }}
-            style={{ width: 100, height: 100 }}
-          />
+          <ImageContainer key={uri}>
+            <ImageItem source={{ uri }} />
+            <ImageAction onPress={() => onDelete(uri)}>
+              <ImageActionIcon size={15} name="trash" />
+            </ImageAction>
+          </ImageContainer>
         ))}
       </Container>
     </>

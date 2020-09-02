@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, ViewProps } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
+import { shade } from 'polished';
 import {
   Container,
   IdTextContainer,
@@ -11,16 +12,20 @@ import {
   CustomButton,
   ButtonText,
   FooterContainer,
-  ItemIcon,
   ListBadge,
   BadgeList,
   BadgeText,
 } from './styles';
 
+export interface BadgeProps {
+  text: string;
+  backgroundColor?: string;
+}
+
 interface Props extends ViewProps {
   id: number;
   descricao: string;
-  badges?: string[];
+  badges?: BadgeProps[];
   onLook?(): void;
   onEdit?(): void;
   onDelete?(): void;
@@ -40,9 +45,9 @@ const ListItem: React.FC<Props> = ({
   onEdit,
   onDelete,
   buttonEditBackgroundColor = '#22b800',
-  buttonEditTextColor = '#1a4012',
-  buttonDeleteBackgroundColor = '#f20202',
-  buttonDeleteTextColor = '#4d0000',
+  buttonEditTextColor = '#fff',
+  buttonDeleteBackgroundColor = '#ff6060',
+  buttonDeleteTextColor = '#fff',
   ...rest
 }) => {
   return (
@@ -62,9 +67,7 @@ const ListItem: React.FC<Props> = ({
         </IdTextContainer>
 
         <DescricaoTextContainer>
-          <ItemIcon name="chevron-left" size={20} color="transparent" />
           <DescricaoText>{descricao}</DescricaoText>
-          <ItemIcon name="chevron-right" size={10} color="#346fef" />
         </DescricaoTextContainer>
 
         <BadgeList
@@ -74,11 +77,11 @@ const ListItem: React.FC<Props> = ({
           horizontal
           data={badges}
           renderItem={({ item }) => (
-            <ListBadge key={item}>
-              <BadgeText>{item}</BadgeText>
+            <ListBadge key={item.text} backgroundColor={item.backgroundColor}>
+              <BadgeText>{item.text}</BadgeText>
             </ListBadge>
           )}
-          keyExtractor={item => item}
+          keyExtractor={item => item.text}
           ListFooterComponent={<View />}
           ListFooterComponentStyle={{ height: 20 }}
         />
@@ -89,14 +92,22 @@ const ListItem: React.FC<Props> = ({
               onPress={onEdit}
               backgroundColor={buttonEditBackgroundColor}
             >
-              <FontAwesome5 name="pen" size={30} color="#1a4012" />
+              <FontAwesome5
+                name="pen"
+                size={30}
+                color={shade(0.4, buttonEditBackgroundColor)}
+              />
               <ButtonText textColor={buttonEditTextColor}>Editar</ButtonText>
             </CustomButton>
             <CustomButton
               onPress={onDelete}
               backgroundColor={buttonDeleteBackgroundColor}
             >
-              <FontAwesome5 name="trash" size={30} color="#ff6060" />
+              <FontAwesome5
+                name="trash"
+                size={30}
+                color={shade(0.4, buttonDeleteBackgroundColor)}
+              />
               <ButtonText textColor={buttonDeleteTextColor}>Apagar</ButtonText>
             </CustomButton>
           </ButtonContainer>

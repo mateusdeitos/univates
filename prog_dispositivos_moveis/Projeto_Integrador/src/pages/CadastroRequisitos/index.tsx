@@ -1,13 +1,6 @@
 /* eslint-disable no-console */
 import React, { useState, useEffect, useCallback } from 'react';
-import {
-  KeyboardAvoidingView,
-  Text,
-  Platform,
-  Alert,
-  Image,
-  View,
-} from 'react-native';
+import { KeyboardAvoidingView, Text, Platform, Alert } from 'react-native';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import {
@@ -15,7 +8,7 @@ import {
   launchImageLibraryAsync,
   MediaTypeOptions,
 } from 'expo-image-picker';
-import { ScrollView, FlatList } from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native-gesture-handler';
 import moment from 'moment';
 import Header from '../../components/Header';
 import Input from '../../components/Input';
@@ -27,7 +20,6 @@ import { RequisitoData } from '../ListagemRequisitos';
 import { options } from '../../defaults/options';
 import SliderInput from '../../components/SliderInput';
 import Button from '../../components/Button';
-import img from '../../../assets/landing.png';
 import ImageGrid from '../../components/ImageGrid';
 
 const CadastroRequisitos: React.FC<TelaCadastroRequisitosProps> = ({
@@ -98,7 +90,9 @@ const CadastroRequisitos: React.FC<TelaCadastroRequisitosProps> = ({
         return;
       }
 
-      const location = await Location.getCurrentPositionAsync();
+      const location = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.High,
+      });
 
       const { latitude, longitude } = location.coords;
 
@@ -192,9 +186,7 @@ const CadastroRequisitos: React.FC<TelaCadastroRequisitosProps> = ({
       return;
     }
     try {
-      const result = await launchCameraAsync({
-        mediaTypes: MediaTypeOptions.Images,
-      });
+      const result = await launchCameraAsync();
       if (!result.cancelled) {
         setFotos([...fotos, result.uri]);
       }
@@ -230,6 +222,13 @@ const CadastroRequisitos: React.FC<TelaCadastroRequisitosProps> = ({
   const handleApagaTodasFotos = useCallback(() => {
     setFotos([]);
   }, []);
+
+  const handleDeletaFoto = useCallback(
+    (uri: string) => {
+      setFotos(fotos.filter(fotoUri => fotoUri !== uri));
+    },
+    [fotos],
+  );
 
   return (
     <>
@@ -335,7 +334,7 @@ const CadastroRequisitos: React.FC<TelaCadastroRequisitosProps> = ({
 
               {fotos.length > 0 && (
                 <>
-                  <ImageGrid images={fotos} />
+                  <ImageGrid images={fotos} onDelete={handleDeletaFoto} />
                   <Button
                     icon="trash"
                     text="Apagar Todas"
