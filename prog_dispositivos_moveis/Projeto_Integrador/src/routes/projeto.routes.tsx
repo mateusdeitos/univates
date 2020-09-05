@@ -55,6 +55,8 @@ type HomePropsType = RouteProp<RootParamList, 'Home'>;
 type HomePropsNavigationType = StackNavigationProp<RootParamList, 'Home'>;
 type LoginPropsType = RouteProp<RootParamList, 'Login'>;
 type LoginPropsNavigationType = StackNavigationProp<RootParamList, 'Login'>;
+type SignUpPropsType = RouteProp<RootParamList, 'SignUp'>;
+type SignUpPropsNavigationType = StackNavigationProp<RootParamList, 'SignUp'>;
 type ListagemProjetosPropsType = RouteProp<RootParamList, 'ListagemProjetos'>;
 type ListagemProjetosPropsNavigationType = StackNavigationProp<
   RootParamList,
@@ -116,9 +118,14 @@ export type TelaLoginProps = {
   route: LoginPropsType;
   navigation: LoginPropsNavigationType;
 };
+export type TelaSignUpProps = {
+  route: SignUpPropsType;
+  navigation: SignUpPropsNavigationType;
+};
 
 type RootParamList = {
   Login: undefined;
+  SignUp: undefined;
   Home: HomeProps;
   ListagemProjetos: undefined;
   CadastroProjetos: CadastroProjetoProps;

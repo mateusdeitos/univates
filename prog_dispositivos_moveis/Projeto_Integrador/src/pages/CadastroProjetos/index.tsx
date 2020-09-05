@@ -5,7 +5,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import moment from 'moment';
 import Header from '../../components/Header';
 import Input from '../../components/Input';
-import { TelaCadastroProjetosProps } from '../../routes/app.routes';
+import { TelaCadastroProjetosProps } from '../../routes/projeto.routes';
 import { Container } from './styles';
 import DatePicker from '../../components/DatePicker';
 import api from '../../services/api';

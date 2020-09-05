@@ -14,7 +14,7 @@ import Header from '../../components/Header';
 import Input from '../../components/Input';
 import { Container } from './styles';
 import RadioButton, { OptionsProps } from '../../components/RadioButton';
-import { TelaCadastroRequisitosProps } from '../../routes/app.routes';
+import { TelaCadastroRequisitosProps } from '../../routes/projeto.routes';
 import api from '../../services/api';
 import { RequisitoData } from '../ListagemRequisitos';
 import { options } from '../../defaults/options';
@@ -96,7 +96,7 @@ const CadastroRequisitos: React.FC<TelaCadastroRequisitosProps> = ({
 
       const { latitude, longitude } = location.coords;
 
-      setCoordenadaAtual(`${latitude},${longitude}`);
+      setCoordenadaAtual(`${latitude.toFixed(10)},${longitude.toFixed(10)}`);
     }
     if (!id) loadPosition();
   }, [id]);
@@ -283,6 +283,8 @@ const CadastroRequisitos: React.FC<TelaCadastroRequisitosProps> = ({
                 editable={false}
                 accessible={false}
                 value={coordenadaAtual}
+                multiline={false}
+                numberOfLines={1}
               />
               <RadioButton
                 label="Tipo do requisito"

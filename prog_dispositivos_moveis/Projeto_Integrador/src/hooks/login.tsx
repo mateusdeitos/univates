@@ -9,8 +9,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { Alert } from 'react-native';
 import api from '../services/api';
 
-interface User {
-  id: string;
+export interface User {
+  id: number;
   nome: string;
   email: string;
 }
@@ -59,10 +59,10 @@ const AuthProvider: React.FC = ({ children }) => {
         await AsyncStorage.multiSet([['user', JSON.stringify(user)]]);
 
         setData({ user });
+        return;
       }
-    } else {
-      Alert.alert('Erro de autenticação', 'Usuário/senha incorreto(s)');
     }
+    Alert.alert('Erro de autenticação', 'Usuário/senha incorreto(s)');
   }, []);
 
   const signOut = useCallback(async () => {

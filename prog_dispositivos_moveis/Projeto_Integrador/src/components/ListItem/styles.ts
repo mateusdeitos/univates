@@ -61,24 +61,28 @@ export const DescricaoText = styled.Text`
 export const FooterContainer = styled.View`
   flex: 1;
   align-items: center;
+  justify-content: flex-end;
   border-radius: 24px;
 `;
 
 export const ButtonContainer = styled.View`
+  flex: 1;
+  width: 100%;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
 `;
 
 export const CustomButton = styled(RectButton)<ButtonProps>`
-  flex: 1;
+  /* flex: 1; */
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
-  padding: 16px;
+  justify-content: center;
+  padding: 8px;
   border-radius: 12px;
   margin-right: 8px;
-  height: 64px;
+  height: 48px;
+  width: 48px;
   background-color: ${props =>
     props.backgroundColor ? props.backgroundColor : '#fff'};
 `;

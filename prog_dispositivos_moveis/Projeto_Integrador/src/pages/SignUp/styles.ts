@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components/native';
 import { RectButton } from 'react-native-gesture-handler';
-import { shade, lighten } from 'polished';
+import { lighten, shade } from 'polished';
 import { colors } from '../../styles/global';
 
 export const Container = styled.View`
@@ -12,7 +12,6 @@ export const Container = styled.View`
 `;
 export const LandingImage = styled.Image`
   flex: 1;
-  margin-top: 20px;
   width: 100%;
   ${css`
     resize-mode: contain;
@@ -30,7 +29,7 @@ export const ContentText = styled.Text`
   margin-bottom: 16px;
 `;
 
-export const LoginButton = styled(RectButton)`
+export const GoBackButton = styled(RectButton)`
   flex-direction: row;
   justify-content: space-between;
   background-color: ${shade(0.2, colors.primaryColor)};
@@ -40,7 +39,6 @@ export const LoginButton = styled(RectButton)`
   align-items: center;
   margin: 20px 0 0 0;
 `;
-
 export const SignUpButton = styled(RectButton)`
   flex-direction: row;
   justify-content: space-between;

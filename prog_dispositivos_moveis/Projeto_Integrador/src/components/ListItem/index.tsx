@@ -10,7 +10,6 @@ import {
   DescricaoTextContainer,
   ButtonContainer,
   CustomButton,
-  ButtonText,
   FooterContainer,
   ListBadge,
   BadgeList,
@@ -26,15 +25,13 @@ interface Props extends ViewProps {
   id: number;
   descricao: string;
   badges?: BadgeProps[];
+  onLink?(): void;
   onLook?(): void;
   onEdit?(): void;
   onDelete?(): void;
   buttonEditBackgroundColor?: string;
-  buttonEditTextColor?: string;
-  buttonEditBorderColor?: string;
+  buttonLinkBackgroundColor?: string;
   buttonDeleteBackgroundColor?: string;
-  buttonDeleteTextColor?: string;
-  buttonDeleteBorderColor?: string;
 }
 
 const ListItem: React.FC<Props> = ({
@@ -44,10 +41,10 @@ const ListItem: React.FC<Props> = ({
   onLook,
   onEdit,
   onDelete,
+  onLink,
+  buttonLinkBackgroundColor = '#343EFE',
   buttonEditBackgroundColor = '#22b800',
-  buttonEditTextColor = '#fff',
   buttonDeleteBackgroundColor = '#ff6060',
-  buttonDeleteTextColor = '#fff',
   ...rest
 }) => {
   return (
@@ -88,16 +85,27 @@ const ListItem: React.FC<Props> = ({
 
         <FooterContainer>
           <ButtonContainer>
+            {onLink && (
+              <CustomButton
+                onPress={onLink}
+                backgroundColor={buttonLinkBackgroundColor}
+              >
+                <FontAwesome5
+                  name="external-link-alt"
+                  size={20}
+                  color={shade(0.4, buttonLinkBackgroundColor)}
+                />
+              </CustomButton>
+            )}
             <CustomButton
               onPress={onEdit}
               backgroundColor={buttonEditBackgroundColor}
             >
               <FontAwesome5
                 name="pen"
-                size={30}
+                size={20}
                 color={shade(0.4, buttonEditBackgroundColor)}
               />
-              <ButtonText textColor={buttonEditTextColor}>Editar</ButtonText>
             </CustomButton>
             <CustomButton
               onPress={onDelete}
@@ -105,10 +113,9 @@ const ListItem: React.FC<Props> = ({
             >
               <FontAwesome5
                 name="trash"
-                size={30}
+                size={20}
                 color={shade(0.4, buttonDeleteBackgroundColor)}
               />
-              <ButtonText textColor={buttonDeleteTextColor}>Apagar</ButtonText>
             </CustomButton>
           </ButtonContainer>
         </FooterContainer>

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-curly-newline */
 /* eslint-disable no-console */
 /* eslint-disable react/jsx-wrap-multilines */
 /* eslint-disable no-nested-ternary */
@@ -16,10 +17,11 @@ import moment from 'moment';
 import api from '../../services/api';
 import Header from '../../components/Header';
 import { Container, TotalBadge } from './styles';
-import { TelaListagemProjetosProps } from '../../routes/app.routes';
+import { TelaListagemProjetosProps } from '../../routes/projeto.routes';
 import { RequisitoData } from '../ListagemRequisitos';
 import NoContentView from '../../components/NoContentView';
 import ListItem from '../../components/ListItem';
+import { useAuth } from '../../hooks/login';
 
 export interface ProjetoData {
   id: number;
@@ -32,16 +34,17 @@ export interface ProjetoData {
 const ListagemProjetos: React.FC<TelaListagemProjetosProps> = ({
   navigation,
 }) => {
+  const { user } = useAuth();
   const [projetos, setProjetos] = useState<ProjetoData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     api
-      .get('/projeto')
+      .get(`/projeto?id_user=${user.id}`)
       .then(response => setProjetos(response.data))
       .catch(error => console.log({ error }))
       .finally(() => setIsLoading(false));
-  }, [isLoading]);
+  }, [isLoading, user.id]);
 
   const addNovoProjeto = useCallback(
     async ({
@@ -54,6 +57,7 @@ const ListagemProjetos: React.FC<TelaListagemProjetosProps> = ({
       try {
         const response = await api.post('/projeto', {
           id,
+          id_user: user.id,
           descricao,
           link_externo,
           data_ini: moment(data_ini, 'DD/MM/YYYY').format('DD/MM/YYYY'),
@@ -64,7 +68,7 @@ const ListagemProjetos: React.FC<TelaListagemProjetosProps> = ({
         console.log({ error });
       }
     },
-    [projetos],
+    [projetos, user.id],
   );
 
   const editaProjeto = useCallback(
@@ -186,6 +190,11 @@ const ListagemProjetos: React.FC<TelaListagemProjetosProps> = ({
                     onLook={() => listaRequisitos(item.id)}
                     onEdit={() => handleEditaProjeto(item)}
                     onDelete={() => deletaProjeto(item.id)}
+                    onLink={() =>
+                      navigation.navigate('TelaLinkProjeto', {
+                        uri: item.link_externo,
+                      })
+                    }
                   />
                 )}
                 keyExtractor={projeto => projeto.id.toString()}
