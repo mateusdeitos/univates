@@ -4,7 +4,7 @@ import { lighten } from 'polished';
 
 export const Container = styled.View`
   flex: 1;
-  margin-top: -40px;
+  /* margin-top: -40px; */
   background: ${lighten(0.01, '#346fef')};
   /* padding: 0 30px 120px; */
 `;

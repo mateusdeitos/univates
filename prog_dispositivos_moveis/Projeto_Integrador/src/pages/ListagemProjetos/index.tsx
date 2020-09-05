@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable react/jsx-wrap-multilines */
 /* eslint-disable no-nested-ternary */
 import React, { useState, useCallback, useEffect } from 'react';
@@ -23,6 +24,7 @@ import ListItem from '../../components/ListItem';
 export interface ProjetoData {
   id: number;
   descricao: string;
+  link_externo: string;
   data_ini: Date;
   data_fim: Date;
 }
@@ -42,11 +44,18 @@ const ListagemProjetos: React.FC<TelaListagemProjetosProps> = ({
   }, [isLoading]);
 
   const addNovoProjeto = useCallback(
-    async ({ id, descricao, data_fim, data_ini }: ProjetoData) => {
+    async ({
+      id,
+      descricao,
+      link_externo,
+      data_fim,
+      data_ini,
+    }: ProjetoData) => {
       try {
         const response = await api.post('/projeto', {
           id,
           descricao,
+          link_externo,
           data_ini: moment(data_ini, 'DD/MM/YYYY').format('DD/MM/YYYY'),
           data_fim: moment(data_fim, 'DD/MM/YYYY').format('DD/MM/YYYY'),
         });
@@ -59,11 +68,18 @@ const ListagemProjetos: React.FC<TelaListagemProjetosProps> = ({
   );
 
   const editaProjeto = useCallback(
-    async ({ id, descricao, data_fim, data_ini }: ProjetoData) => {
+    async ({
+      id,
+      descricao,
+      link_externo,
+      data_fim,
+      data_ini,
+    }: ProjetoData) => {
       console.log({ id, descricao, data_fim, data_ini });
       try {
         const response = await api.put(`/projeto/${id}`, {
           descricao,
+          link_externo,
           data_ini: moment(data_ini, 'DD/MM/YYYY').format('DD/MM/YYYY'),
           data_fim: moment(data_fim, 'DD/MM/YYYY').format('DD/MM/YYYY'),
         });
@@ -119,11 +135,12 @@ const ListagemProjetos: React.FC<TelaListagemProjetosProps> = ({
 
   const handleEditaProjeto = useCallback(
     (projeto: ProjetoData) => {
-      const { id, descricao, data_ini, data_fim } = projeto;
+      const { id, descricao, link_externo, data_ini, data_fim } = projeto;
       navigation.navigate('CadastroProjetos', {
         onSubmit: editaProjeto,
         id,
         descricao,
+        link_externo,
         data_fim,
         data_ini,
       });

@@ -15,13 +15,23 @@ const CadastroProjetos: React.FC<TelaCadastroProjetosProps> = ({
   route,
   navigation,
 }) => {
-  const { id, descricao, data_ini, data_fim, onSubmit } = route.params;
+  const {
+    id,
+    descricao,
+    link_externo,
+    data_ini,
+    data_fim,
+    onSubmit,
+  } = route.params;
   const [idProjeto, setIdProjeto] = useState(0);
   const [exibirDatePickerInicial, setExibirDatePickerInicial] = useState(false);
   const [exibirDatePickerFinal, setExibirDatePickerFinal] = useState(false);
   const [dataInicial, setDataInicial] = useState(new Date());
   const [dataConclusao, setDataConclusao] = useState(new Date());
   const [descricaoProjeto, setDescricaoProjeto] = useState(descricao || '');
+  const [linkExternoProjeto, setLinkExternoProjeto] = useState(
+    link_externo || '',
+  );
 
   useEffect(() => {
     if (!id) {
@@ -42,10 +52,11 @@ const CadastroProjetos: React.FC<TelaCadastroProjetosProps> = ({
     } else {
       setIdProjeto(id);
       setDescricaoProjeto(descricao || '');
+      setLinkExternoProjeto(link_externo || '');
       setDataInicial(moment(data_ini, 'DD/MM/YYYY').toDate());
       setDataConclusao(moment(data_fim, 'DD/MM/YYYY').toDate());
     }
-  }, [data_fim, data_ini, descricao, id]);
+  }, [data_fim, data_ini, descricao, id, link_externo]);
 
   const mudaDataInicial = useCallback((data: Date) => {
     setExibirDatePickerInicial(false);
@@ -78,6 +89,7 @@ const CadastroProjetos: React.FC<TelaCadastroProjetosProps> = ({
     onSubmit({
       id: idProjeto,
       descricao: descricaoProjeto,
+      link_externo: linkExternoProjeto,
       data_ini: dataInicial,
       data_fim: dataConclusao,
     });
@@ -88,6 +100,7 @@ const CadastroProjetos: React.FC<TelaCadastroProjetosProps> = ({
     onSubmit,
     idProjeto,
     descricaoProjeto,
+    linkExternoProjeto,
     dataInicial,
     dataConclusao,
     inicializaForm,
@@ -158,6 +171,23 @@ const CadastroProjetos: React.FC<TelaCadastroProjetosProps> = ({
                 onFocus: exibeDatePickerFinal,
                 defaultValue: moment(dataConclusao).format('DD/MM/YYYY'),
                 editable: true,
+              }}
+            />
+            <Input
+              icon="link"
+              label="Link documentação externa"
+              editable
+              onChangeText={data => setLinkExternoProjeto(data)}
+              defaultValue={linkExternoProjeto}
+              autoCorrect={false}
+              autoCapitalize="none"
+              button={{
+                icon: 'external-link',
+                enabled: !!linkExternoProjeto,
+                onPress: () =>
+                  navigation.navigate('TelaLinkProjeto', {
+                    uri: linkExternoProjeto,
+                  }),
               }}
             />
           </Container>

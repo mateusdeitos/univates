@@ -13,9 +13,14 @@ import { RequisitoData } from '../pages/ListagemRequisitos';
 export interface CadastroProjetoProps {
   id?: number;
   descricao?: string;
+  link_externo?: string;
   data_ini?: Date;
   data_fim?: Date;
   onSubmit(projeto: ProjetoData): void;
+}
+
+export interface LinkProjetoProps {
+  uri: string;
 }
 
 interface ListagemRequisitosProps {
@@ -46,9 +51,14 @@ type ListagemProjetosPropsNavigationType = DrawerNavigationProp<
   StackNavigationProp<RootParamList, 'ListagemProjetos'>;
 
 type CadastroProjetosPropsType = RouteProp<RootParamList, 'CadastroProjetos'>;
+type LinkProjetoPropsType = RouteProp<RootParamList, 'TelaLinkProjeto'>;
 type CadastroProjetosPropsNavigationType = StackNavigationProp<
   RootParamList,
   'CadastroProjetos'
+>;
+type LinkProjetoPropsNavigationType = StackNavigationProp<
+  RootParamList,
+  'TelaLinkProjeto'
 >;
 type CadastroRequisitosPropsType = RouteProp<
   RootParamList,
@@ -71,6 +81,10 @@ export type TelaCadastroProjetosProps = {
   route: CadastroProjetosPropsType;
   navigation: CadastroProjetosPropsNavigationType;
 };
+export type TelaLinkProjetoProps = {
+  route: LinkProjetoPropsType;
+  navigation: LinkProjetoPropsNavigationType;
+};
 export type TelaListagemRequisitosProps = {
   route: ListagemRequisitosPropsType;
   navigation: ListagemRequisitosPropsNavigationType;
@@ -92,6 +106,7 @@ type RootParamList = {
   Home: undefined;
   ListagemProjetos: undefined;
   CadastroProjetos: CadastroProjetoProps;
+  TelaLinkProjeto: LinkProjetoProps;
   ListagemRequisitos: ListagemRequisitosProps;
   CadastroRequisitos: CadastroRequisitosProps;
 };

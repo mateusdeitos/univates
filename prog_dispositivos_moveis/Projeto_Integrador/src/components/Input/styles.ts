@@ -1,25 +1,32 @@
 import styled from 'styled-components/native';
-import { lighten } from 'polished';
 import Icon from 'react-native-vector-icons/Feather';
+import { RectButton } from 'react-native-gesture-handler';
+import { colors } from '../../styles/global';
 
 interface ContainerProps {
   customHeight: number;
-  backgroundColor: string;
+  enabled: boolean;
+}
+
+interface InputButtonProps {
+  enabled: boolean;
 }
 
 export const Container = styled.View<ContainerProps>`
   width: 100%;
   height: ${props => (props.customHeight > 0 ? props.customHeight : 60)}px;
-  padding-top: ${props => (props.customHeight > 0 ? 8 : 0)}px;
-  padding-bottom: ${props => (props.customHeight > 0 ? 8 : 0)}px;
-  background: ${props => lighten(0.2, props.backgroundColor)};
+  background: ${props =>
+    props.enabled
+      ? colors.inputEnabledBackground
+      : colors.inputDisabledBackground};
   flex-direction: row;
   align-items: center;
-  padding: 0 16px;
+  padding: 8px;
   border-radius: 10px;
   margin-bottom: 8px;
   border-width: 2px;
-  border-color: ${props => props.backgroundColor};
+  border-color: ${props =>
+    props.enabled ? colors.inputEnabledBorder : colors.inputDisabledBorder};
 `;
 
 export const TextInput = styled.TextInput`
@@ -37,6 +44,18 @@ export const InputIcon = styled(Icon)`
 export const Label = styled.Text`
   align-self: flex-start;
   margin-bottom: 4px;
-  color: #a6a6a6;
+  color: ${colors.labelColor};
   font-family: Poppins_400Regular;
+`;
+
+export const InputButton = styled(RectButton)<InputButtonProps>`
+  width: 48px;
+  height: 100%;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  background: ${props =>
+    props.enabled
+      ? colors.inputButtonEnabledBackground
+      : colors.inputButtonDisabledBackground};
 `;
