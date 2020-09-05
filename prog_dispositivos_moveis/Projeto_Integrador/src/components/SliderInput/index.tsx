@@ -1,7 +1,9 @@
 import React from 'react';
 import { Text } from 'react-native';
 import Slider from '@react-native-community/slider';
-import { Container, Label } from './styles';
+import { Container } from './styles';
+import Label from '../Label';
+import { colors } from '../../styles/global';
 
 interface InputProps {
   label?: string;
@@ -22,7 +24,7 @@ const SliderInput: React.FC<InputProps> = ({
 }) => {
   return (
     <>
-      {label && <Label>{label}</Label>}
+      {label && <Label text={label} labelColor={colors.primaryColor} />}
       <Container backgroundColor="#346fef">
         <Slider
           style={{ flex: 1 }}

@@ -2,8 +2,9 @@ import React from 'react';
 import { TextInputProperties, Text } from 'react-native';
 import { shade, lighten } from 'polished';
 import Icon from 'react-native-vector-icons/Feather';
-import { Container, TextInput, InputIcon, Label, InputButton } from './styles';
+import { Container, TextInput, InputIcon, InputButton } from './styles';
 import { colors } from '../../styles/global';
+import Label from '../Label';
 
 interface ButtonInputProps {
   icon: string;
@@ -31,7 +32,9 @@ const Input: React.FC<InputProps> = ({
 }) => {
   return (
     <>
-      {label && <Label color={labelColor}>{label}</Label>}
+      {label && (
+        <Label text={label} labelColor={labelColor || colors.primaryColor} />
+      )}
       <Container customHeight={60 * (numberOfLines || 1)} enabled={editable}>
         {icon && (
           <InputIcon

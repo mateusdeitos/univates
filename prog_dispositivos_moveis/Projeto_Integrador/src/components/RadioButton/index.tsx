@@ -1,7 +1,8 @@
-/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import SwitchSelector from 'react-native-switch-selector';
-import {Label} from './styles';
+import Label from '../Label';
+import { colors } from '../../styles/global';
+
 export interface OptionsProps {
   label: string;
   value: number;
@@ -26,9 +27,9 @@ const RadioButton: React.FC<SelectProps> = ({
 }) => {
   return (
     <>
-      {label && <Label>{label}</Label>}
+      {label && <Label text={label} labelColor={colors.primaryColor} />}
       <SwitchSelector
-        style={{marginBottom: 8}}
+        style={{ marginBottom: 8 }}
         borderRadius={10}
         initial={initial}
         options={options}
