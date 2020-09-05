@@ -9,7 +9,6 @@ import {
 import Header from '../../components/Header';
 
 const LinkProjeto: React.FC<TelaLinkProjetoProps> = ({ route, navigation }) => {
-  const [isLoading, setIsLoading] = useState(true);
   const { uri } = route.params;
   return (
     <>
@@ -21,11 +20,8 @@ const LinkProjeto: React.FC<TelaLinkProjetoProps> = ({ route, navigation }) => {
           onPress: () => navigation.goBack(),
         }}
       />
-      {/* {isLoading && <ActivityIndicator style={{ flex: 1, justifyContent: 'center' }} />} */}
       <WebView
         style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
-        onLoadStart={() => setIsLoading(false)}
-        onLoad={() => setIsLoading(false)}
         startInLoadingState
         source={{ uri }}
       />

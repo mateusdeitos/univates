@@ -39,9 +39,9 @@ const AuthProvider: React.FC = ({ children }) => {
 
   useEffect(() => {
     async function loadStorageData(): Promise<void> {
-      const [user] = await AsyncStorage.multiGet(['user']);
-      if (user[0]) {
-        setData({ user: JSON.parse(user[0]) });
+      const user = await AsyncStorage.getItem('user');
+      if (user) {
+        setData({ user: JSON.parse(user) });
       }
     }
 
@@ -56,7 +56,7 @@ const AuthProvider: React.FC = ({ children }) => {
       if (senha === password) {
         const user = response.data[0];
         console.log({ user });
-        await AsyncStorage.multiSet([['user', JSON.stringify(user)]]);
+        await AsyncStorage.setItem('user', JSON.stringify(user));
 
         setData({ user });
         return;
@@ -66,7 +66,7 @@ const AuthProvider: React.FC = ({ children }) => {
   }, []);
 
   const signOut = useCallback(async () => {
-    await AsyncStorage.multiRemove(['user']);
+    await AsyncStorage.removeItem('user');
 
     setData({} as AuthState);
   }, []);

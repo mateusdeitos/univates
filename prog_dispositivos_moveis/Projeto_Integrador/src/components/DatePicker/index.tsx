@@ -26,6 +26,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
   return (
     <>
       <Input
+        editable
         icon={input.icon}
         label={input.label}
         onBlur={input.onBlur}

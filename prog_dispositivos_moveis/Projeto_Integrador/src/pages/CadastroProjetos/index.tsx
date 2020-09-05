@@ -1,7 +1,7 @@
 /* eslint-disable import/no-useless-path-segments */
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { KeyboardAvoidingView, Keyboard, Platform } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import moment from 'moment';
 import Header from '../../components/Header';
 import Input from '../../components/Input';
@@ -23,6 +23,7 @@ const CadastroProjetos: React.FC<TelaCadastroProjetosProps> = ({
     data_fim,
     onSubmit,
   } = route.params;
+  const nomeProjetoRef = useRef<TextInput>(null);
   const [idProjeto, setIdProjeto] = useState(0);
   const [exibirDatePickerInicial, setExibirDatePickerInicial] = useState(false);
   const [exibirDatePickerFinal, setExibirDatePickerFinal] = useState(false);
@@ -128,7 +129,7 @@ const CadastroProjetos: React.FC<TelaCadastroProjetosProps> = ({
             onPress: salvaProjeto,
           }}
         />
-        <ScrollView style={{ marginTop: 12 }}>
+        <ScrollView style={{ marginTop: 30 }}>
           <Container>
             <Input
               icon="hash"
