@@ -12,6 +12,10 @@ interface InputButtonProps {
   enabled: boolean;
 }
 
+interface LabelProps {
+  color?: string;
+}
+
 export const Container = styled.View<ContainerProps>`
   width: 100%;
   height: ${props => (props.customHeight > 0 ? props.customHeight : 60)}px;
@@ -41,10 +45,10 @@ export const InputIcon = styled(Icon)`
   margin-right: 8px;
 `;
 
-export const Label = styled.Text`
+export const Label = styled.Text<LabelProps>`
   align-self: flex-start;
   margin-bottom: 4px;
-  color: ${colors.labelColor};
+  color: ${props => (props.color ? props.color : colors.labelColor)};
   font-family: Poppins_400Regular;
 `;
 

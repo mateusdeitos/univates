@@ -16,7 +16,7 @@ import moment from 'moment';
 import api from '../../services/api';
 import Header from '../../components/Header';
 import { Container } from './styles';
-import { TelaListagemRequisitosProps } from '../../routes/app.routes';
+import { TelaListagemRequisitosProps } from '../../routes/projeto.routes';
 import NoContentView from '../../components/NoContentView';
 import ListItem from '../../components/ListItem';
 import { options } from '../../defaults/options';

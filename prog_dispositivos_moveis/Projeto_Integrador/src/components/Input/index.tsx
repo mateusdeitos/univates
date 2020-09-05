@@ -14,12 +14,14 @@ interface ButtonInputProps {
 interface InputProps extends TextInputProperties {
   icon?: string;
   label?: string;
+  labelColor?: string;
   editable: boolean;
   button?: ButtonInputProps;
 }
 
 const Input: React.FC<InputProps> = ({
   label,
+  labelColor,
   icon,
   editable,
   value,
@@ -29,7 +31,7 @@ const Input: React.FC<InputProps> = ({
 }) => {
   return (
     <>
-      {label && <Label>{label}</Label>}
+      {label && <Label color={labelColor}>{label}</Label>}
       <Container customHeight={60 * (numberOfLines || 1)} enabled={editable}>
         {icon && (
           <InputIcon

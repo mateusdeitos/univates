@@ -157,8 +157,8 @@ const ListagemProjetos: React.FC<TelaListagemProjetosProps> = ({
           texto="Listagem de projetos"
           backgroundColor="#346FEF"
           iconLeft={{
-            iconName: 'menu',
-            onPress: () => navigation.toggleDrawer(),
+            iconName: 'arrow-left',
+            onPress: () => navigation.goBack(),
           }}
           iconRight={{
             iconName: 'plus',

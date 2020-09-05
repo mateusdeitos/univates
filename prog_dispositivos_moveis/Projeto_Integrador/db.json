@@ -1,4 +1,12 @@
 {
+  "users": [
+    {
+      "id": 1,
+      "nome": "Mateus Deitos",
+      "email": "mateus@email.com",
+      "senha": "123456"
+    }
+  ],
   "projeto": [
     {
       "id": 1,

@@ -12,6 +12,7 @@ import {
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'react-native';
 import Routes from './src/routes';
+import { AuthProvider } from './src/hooks/login';
 
 const App: React.FC = () => {
   // Carrega as fontes
@@ -29,7 +30,9 @@ const App: React.FC = () => {
   return (
     <NavigationContainer>
       <StatusBar barStyle="light-content" backgroundColor="#346FEF" />
-      <Routes />
+      <AuthProvider>
+        <Routes />
+      </AuthProvider>
     </NavigationContainer>
   );
 };
