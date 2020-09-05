@@ -1,6 +1,6 @@
 # Projetos desenvolvidos para as disciplinas do curso de Análise de Sistemas
 
-* [Projeto Integrador](https://github.com/sirmd/univates/blob/master/prog_dispositivos_moveis/Projeto_Integrador/readme.md)
+* [Projeto Integrador IX (Dispositivos móveis)](https://github.com/sirmd/univates/blob/master/prog_dispositivos_moveis/Projeto_Integrador/readme.md)
   * [Entrega 2](https://github.com/sirmd/univates/blob/master/prog_dispositivos_moveis/Projeto_Integrador/readme.md#entrega-2)
   * [Entrega 3](https://github.com/sirmd/univates/blob/master/prog_dispositivos_moveis/Projeto_Integrador/readme.md#entrega-3)
   * [Entrega 4](https://github.com/sirmd/univates/blob/master/prog_dispositivos_moveis/Projeto_Integrador/readme.md#entrega-4)
