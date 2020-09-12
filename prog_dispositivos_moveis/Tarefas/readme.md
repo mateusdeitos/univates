@@ -50,3 +50,20 @@
 <p align="center">
   <img width="250" src="tarefa_5/.prints/demo.gif"/>
 </p>
+
+# Tarefa 6
+
+## Requisitos
+ - Validar CNPJ utilizando um webservice
+ - Validar CPF utilizando um webservice
+ 
+## Ferramentas utilizadas
+ - React native
+ - Expo client
+ - Axios
+ 
+## Demonstração do app
+
+<p align="center">
+  <img width="250" src="tarefa_6/.prints/demo.gif"/>
+</p>
