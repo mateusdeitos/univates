@@ -1,5 +1,5 @@
 import React from 'react';
-import {Container, HeaderText, HeaderIcon} from './styles';
+import { Container, HeaderText, HeaderIcon } from './styles';
 
 interface HeaderIcon {
   iconName: string;
@@ -12,9 +12,16 @@ interface HeaderProps {
   icon?: HeaderIcon;
 }
 
-const Header: React.FC<HeaderProps> = ({texto, backgroundColor, icon}) => {
+const Header: React.FC<HeaderProps> = ({ texto, backgroundColor, icon }) => {
   return (
     <Container backgroundColor={backgroundColor || '#346FEF'}>
+      <HeaderIcon
+        onPress={() => { }}
+        icon='plus'
+        size={20}
+        color={'#346FEF'}
+      />
+      <HeaderText>{texto}</HeaderText>
       {icon && (
         <HeaderIcon
           onPress={icon.onPress}
@@ -23,7 +30,6 @@ const Header: React.FC<HeaderProps> = ({texto, backgroundColor, icon}) => {
           color={'#fff'}
         />
       )}
-      <HeaderText>{texto}</HeaderText>
     </Container>
   );
 };

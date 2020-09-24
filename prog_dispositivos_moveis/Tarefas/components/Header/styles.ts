@@ -12,7 +12,7 @@ export const Container = styled.View<HeaderProps>`
   background: ${(props) => props.backgroundColor};
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
 `;
 
 export const HeaderText = styled.Text`
@@ -23,7 +23,5 @@ export const HeaderText = styled.Text`
 `;
 
 export const HeaderIcon = styled(IconButton)`
-  margin-right: 8px;
-  position: absolute;
-  left: 15px;
+  margin-right: 16px;
 `;

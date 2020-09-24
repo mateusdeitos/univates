@@ -1,0 +1,18 @@
+{
+  "usuarios": [
+    {
+      "nome": "João das couves",
+      "idade": 52,
+      "email": "joaocouves@testr.com",
+      "endereco": "Rua teste, bairro teste, testelandia",
+      "id": 2
+    },
+    {
+      "nome": "Mateus Deitos ",
+      "idade": 29,
+      "email": "mateus.deitos@tiny.com.br",
+      "endereco": "Rua xingu, 1190. São Bento. BENTO GONÇALVES ",
+      "id": 3
+    }
+  ]
+}
