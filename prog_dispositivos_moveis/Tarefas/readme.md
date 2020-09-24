@@ -55,15 +55,19 @@
 
 ## Requisitos
  - Validar CNPJ utilizando um webservice
- - Validar CPF utilizando um webservice
+ - Validar CPF redirecionando para o site da Receita Federal
  
 ## Ferramentas utilizadas
  - React native
+ - React Native Paper
  - Expo client
  - Axios
  
 ## Demonstração do app
 
 <p align="center">
-  <img width="250" src="tarefa_6/.prints/demo.gif"/>
+  <img width="250" src="tarefa_6/prints-telas/demo.gif"/>
+  <img width="250" src="tarefa_6/prints-telas/1.jpeg"/>
+  <img width="250" src="tarefa_6/prints-telas/2.jpeg"/>
+  <img width="250" src="tarefa_6/prints-telas/3.jpeg"/>
 </p>
